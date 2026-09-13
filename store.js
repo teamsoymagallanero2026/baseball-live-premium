@@ -50,7 +50,7 @@ export function normalizeGame(input) {
   const g = clone(DEFAULT_GAME);
   if (!input || typeof input !== "object") return g;
 
-  g.version = 3;
+  g.version = 4;
   g.teams.away = { ...g.teams.away, ...(input.teams?.away || {}) };
   g.teams.home = { ...g.teams.home, ...(input.teams?.home || {}) };
   g.count = { ...g.count, ...(input.count || {}) };

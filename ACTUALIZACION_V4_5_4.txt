@@ -1,0 +1,31 @@
+BASEBALL LIVE PREMIUM — ACTUALIZACIÓN V4.5.4
+=============================================
+
+VERSIÓN: V4.5.4 — GLASS PREMIUM TEAM STYLE
+
+NOVEDADES
+- paquete completo listo para implementar
+- nombres de equipos con efecto vidrio transparente brillante 3D
+- escudos/logos en cápsulas premium tipo cristal
+- colores del diseño editables por equipo (principal y secundario)
+- compatible con nombres, siglas y logos editables desde el panel control
+- se mantiene la lógica: VISITANTE izquierda / HOME derecha
+- se mantiene la lógica: ALTA batea visitante / BAJA batea home
+- mantiene mejoras de legibilidad de V4.5.3 (outs, B/S/O, R/H/E y textos grandes)
+
+CÓMO CAMBIAR EQUIPOS
+1) abre /control
+2) edita nombre, sigla, logo y colores principal/secundario
+3) si Magallanes es visitante, colócalo a la izquierda
+4) si Magallanes es home club, colócalo a la derecha
+5) el overlay se actualiza automáticamente
+
+IMPLEMENTACIÓN
+1) descomprime este paquete completo
+2) entra a tu repositorio GitHub baseball-live-premium
+3) Add file -> Upload files
+4) sube TODO el contenido de esta carpeta reemplazando archivos
+5) Commit changes
+6) espera el deploy automático en Vercel
+7) abre: https://baseball-live-premium.vercel.app/overlay?v=4.5.4
+8) haz Ctrl + F5

@@ -12,7 +12,7 @@ import {
 
 const $ = id => document.getElementById(id);
 const HISTORY_KEY = "baseball-live-premium-history-v1";
-const MAGALLANES_META = { name: "MAGALLANES", short: "MAG", logo: "./assets/magallanes.png" };
+const MAGALLANES_META = { name: "MAGALLANES", short: "MAG", logo: "./assets/magallanes.png", primary: "#1D8FFF", secondary: "#FFD54A" };
 
 let game = normalizeGame(DEFAULT_GAME);
 let canWrite = mode === "local";
@@ -31,6 +31,30 @@ function initials(name) {
 function isMagallanes(team) {
   const text = `${team?.name || ""} ${team?.short || ""}`.toUpperCase();
   return text.includes("MAGALLANES") || /\bMAG\b/.test(text);
+}
+
+function normalizeHexColor(value, fallback = "#2ea8ff") {
+  const raw = String(value || "").trim();
+  if (/^#[0-9a-fA-F]{6}$/.test(raw)) return raw.toUpperCase();
+  if (/^#[0-9a-fA-F]{3}$/.test(raw)) {
+    return ("#" + raw[1] + raw[1] + raw[2] + raw[2] + raw[3] + raw[3]).toUpperCase();
+  }
+  return fallback.toUpperCase();
+}
+
+function defaultTeamTheme(key, team) {
+  if (isMagallanes(team)) return { primary: "#1D8FFF", secondary: "#FFD54A" };
+  return key === "home"
+    ? { primary: "#F4B400", secondary: "#FFF3B0" }
+    : { primary: "#2EA8FF", secondary: "#A7EEFF" };
+}
+
+function getTeamTheme(key, team) {
+  const fallback = defaultTeamTheme(key, team);
+  return {
+    primary: normalizeHexColor(team?.primary, fallback.primary),
+    secondary: normalizeHexColor(team?.secondary, fallback.secondary)
+  };
 }
 
 function showToast(message) {
@@ -190,6 +214,11 @@ function renderLogoPreview(side, team) {
   const shell = $(`${side}LogoShell`);
   if (!img || !fallback || !shell) return;
 
+  const key = side === "home" ? "home" : "away";
+  const theme = getTeamTheme(key, team);
+  shell.style.setProperty("--team-primary", theme.primary);
+  shell.style.setProperty("--team-secondary", theme.secondary);
+
   fallback.textContent = team.short || initials(team.name);
   const logo = String(team.logo || "").trim();
   if (!logo) {
@@ -217,6 +246,12 @@ function render(g) {
   if (document.activeElement !== $("awayShortInput")) $("awayShortInput").value = a.short || initials(a.name);
   if (document.activeElement !== $("homeLogoUrlInput")) $("homeLogoUrlInput").value = h.logo?.startsWith("data:") ? "" : (h.logo || "");
   if (document.activeElement !== $("awayLogoUrlInput")) $("awayLogoUrlInput").value = a.logo?.startsWith("data:") ? "" : (a.logo || "");
+  const homeTheme = getTeamTheme("home", h);
+  const awayTheme = getTeamTheme("away", a);
+  if (document.activeElement !== $("homePrimaryInput")) $("homePrimaryInput").value = homeTheme.primary;
+  if (document.activeElement !== $("homeSecondaryInput")) $("homeSecondaryInput").value = homeTheme.secondary;
+  if (document.activeElement !== $("awayPrimaryInput")) $("awayPrimaryInput").value = awayTheme.primary;
+  if (document.activeElement !== $("awaySecondaryInput")) $("awaySecondaryInput").value = awayTheme.secondary;
 
   renderLogoPreview("home", h);
   renderLogoPreview("away", a);
@@ -250,6 +285,8 @@ async function handleTeamField(key, field, value) {
   if (field === "name") next.teams[key].name = value.trim() || (key === "home" ? "HOME CLUB" : "VISITANTE");
   if (field === "short") next.teams[key].short = value.trim().replace(/[^A-Za-z0-9ÁÉÍÓÚÑ]/gi, "").slice(0, 5).toUpperCase() || initials(next.teams[key].name);
   if (field === "logo") next.teams[key].logo = value.trim();
+  if (field === "primary") next.teams[key].primary = normalizeHexColor(value, defaultTeamTheme(key, next.teams[key]).primary);
+  if (field === "secondary") next.teams[key].secondary = normalizeHexColor(value, defaultTeamTheme(key, next.teams[key]).secondary);
   await commit(next, "Equipo actualizado");
 }
 
@@ -378,6 +415,10 @@ function bindEvents() {
   $("awayNameInput").addEventListener("change", e => handleTeamField("away", "name", e.target.value));
   $("homeShortInput").addEventListener("change", e => handleTeamField("home", "short", e.target.value));
   $("awayShortInput").addEventListener("change", e => handleTeamField("away", "short", e.target.value));
+  $("homePrimaryInput").addEventListener("change", e => handleTeamField("home", "primary", e.target.value));
+  $("homeSecondaryInput").addEventListener("change", e => handleTeamField("home", "secondary", e.target.value));
+  $("awayPrimaryInput").addEventListener("change", e => handleTeamField("away", "primary", e.target.value));
+  $("awaySecondaryInput").addEventListener("change", e => handleTeamField("away", "secondary", e.target.value));
   $("homeLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleTeamField("home", "logo", e.target.value); });
   $("awayLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleTeamField("away", "logo", e.target.value); });
   $("homeLogoFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) handleLogoFile("home", f); e.target.value = ""; });
@@ -427,6 +468,8 @@ function bindEvents() {
       next.teams[key].name = game.teams[key].name;
       next.teams[key].short = game.teams[key].short;
       next.teams[key].logo = game.teams[key].logo;
+      next.teams[key].primary = game.teams[key].primary;
+      next.teams[key].secondary = game.teams[key].secondary;
     }
     next.lastPlay = "PLAY BALL";
     fx(next, "PLAY BALL");

@@ -26,6 +26,40 @@ function isMagallanes(team) {
   return combined.includes("MAGALLANES") || /\bMAG\b/.test(combined);
 }
 
+
+function normalizeHexColor(value, fallback = "#2EA8FF") {
+  const raw = String(value || "").trim();
+  if (/^#[0-9a-fA-F]{6}$/.test(raw)) return raw.toUpperCase();
+  if (/^#[0-9a-fA-F]{3}$/.test(raw)) return ("#" + raw[1] + raw[1] + raw[2] + raw[2] + raw[3] + raw[3]).toUpperCase();
+  return fallback.toUpperCase();
+}
+
+function hexToRgbString(hex) {
+  const value = normalizeHexColor(hex).slice(1);
+  const r = parseInt(value.slice(0,2), 16);
+  const g = parseInt(value.slice(2,4), 16);
+  const b = parseInt(value.slice(4,6), 16);
+  return `${r}, ${g}, ${b}`;
+}
+
+function defaultTeamTheme(side, team) {
+  if (isMagallanes(team)) return { primary: "#1D8FFF", secondary: "#FFD54A" };
+  return side === "home"
+    ? { primary: "#F4B400", secondary: "#FFF3B0" }
+    : { primary: "#2EA8FF", secondary: "#A7EEFF" };
+}
+
+function applyTeamTheme(side, team) {
+  const card = $(`${side}Card`);
+  if (!card) return;
+  const fallback = defaultTeamTheme(side, team);
+  const primary = normalizeHexColor(team?.primary, fallback.primary);
+  const secondary = normalizeHexColor(team?.secondary, fallback.secondary);
+  card.style.setProperty("--team-primary", primary);
+  card.style.setProperty("--team-secondary", secondary);
+  card.style.setProperty("--team-primary-rgb", hexToRgbString(primary));
+  card.style.setProperty("--team-secondary-rgb", hexToRgbString(secondary));
+}
 function setTeamLogo(side, team) {
   const image = $(`${side}Logo`);
   const fallback = $(`${side}Badge`);
@@ -153,6 +187,8 @@ function render(game) {
   $("awayShort").textContent = away.short || initials(away.name);
   setTeamLogo("home", home);
   setTeamLogo("away", away);
+  applyTeamTheme("home", home);
+  applyTeamTheme("away", away);
 
   $("homeCard").classList.toggle("is-magallanes", isMagallanes(home));
   $("awayCard").classList.toggle("is-magallanes", isMagallanes(away));

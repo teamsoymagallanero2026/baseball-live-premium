@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Control Team Soy Magallanero — V4.5</title>
-  <link rel="stylesheet" href="control.css?v=4.5.0" />
+  <title>Control Team Soy Magallanero — V4.5.4</title>
+  <link rel="stylesheet" href="control.css?v=4.5.4" />
 </head>
 <body>
   <div class="app-shell">
     <header class="app-header">
       <div>
-        <div class="eyebrow">TEAM SOY MAGALLANERO · V4.5</div>
+        <div class="eyebrow">TEAM SOY MAGALLANERO · V4.5.4</div>
         <h1>Panel de control</h1>
       </div>
       <div class="header-actions">
@@ -42,7 +42,7 @@
           <button class="btn gold-btn" id="magHomeBtn">Magallanes HOME</button>
           <button class="btn subtle" id="swapTeamsBtn">⇄ Intercambiar VISITANTE / HOME</button>
         </div>
-        <p class="hint">Los nombres, siglas y logos son editables. Puedes cargar cada logo desde tu PC o pegar una URL. Al iniciar un inning, el visitante batea en la ALTA y el home club cubre; en la BAJA batea el home.</p>
+        <p class="hint">Los nombres, siglas, logos y colores son editables. Puedes cargar cada logo desde tu PC o pegar una URL, y también ajustar color principal/secundario para que el vidrio premium combine con cada equipo. Al iniciar un inning, el visitante batea en la ALTA y el home club cubre; en la BAJA batea el home.</p>
       </section>
 
       <section class="teams-grid">
@@ -65,6 +65,8 @@
           <div class="team-fields-grid">
             <label>Nombre del equipo<input id="awayNameInput" maxlength="24" value="MAGALLANES" /></label>
             <label>Sigla<input id="awayShortInput" maxlength="5" value="MAG" /></label>
+            <label>Color principal<input id="awayPrimaryInput" type="color" value="#1d8fff" /></label>
+            <label>Color secundario<input id="awaySecondaryInput" type="color" value="#ffd54a" /></label>
           </div>
           <label>Logo por URL (opcional)<input id="awayLogoUrlInput" placeholder="https://... o ./assets/logo.png" /></label>
           <div class="logo-actions">
@@ -98,6 +100,8 @@
           <div class="team-fields-grid">
             <label>Nombre del equipo<input id="homeNameInput" maxlength="24" value="RIVAL" /></label>
             <label>Sigla<input id="homeShortInput" maxlength="5" value="RIV" /></label>
+            <label>Color principal<input id="homePrimaryInput" type="color" value="#f4b400" /></label>
+            <label>Color secundario<input id="homeSecondaryInput" type="color" value="#fff3b0" /></label>
           </div>
           <label>Logo por URL (opcional)<input id="homeLogoUrlInput" placeholder="https://... o ./assets/logo.png" /></label>
           <div class="logo-actions">

@@ -187,3 +187,23 @@ input:focus { border-color: rgba(88,199,255,.7); box-shadow: 0 0 0 3px rgba(88,1
   .team-fields-grid { grid-template-columns: 1fr; }
   .team-heading-with-logo h2 { max-width: 190px; }
 }
+
+/* V4.5.4 — soporte visual para color pickers y preview premium */
+input[type="color"] {
+  width: 100%;
+  min-height: 46px;
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  cursor: pointer;
+}
+.control-logo-shell {
+  background:
+    radial-gradient(circle at 28% 24%, rgba(255,255,255,.86), rgba(255,255,255,.20) 18%, transparent 34%),
+    linear-gradient(145deg, color-mix(in srgb, var(--team-secondary, #8fd7ff) 62%, white), var(--team-primary, #1d8fff));
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,.34),
+    0 10px 22px rgba(0,0,0,.14),
+    0 0 24px color-mix(in srgb, var(--team-primary, #1d8fff) 28%, transparent);
+}
