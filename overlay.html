@@ -3,33 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Overlay Baseball Live Premium — TikTok 1080×1920</title>
-  <link rel="stylesheet" href="overlay.css?v=4.1.0" />
+  <title>Overlay Baseball Live Premium — Marcador V4.2</title>
+  <link rel="stylesheet" href="overlay.css?v=4.2.0" />
 </head>
 <body>
   <main class="broadcast-frame" aria-label="Overlay vertical de béisbol en vivo">
 
-    <!-- Marco de la cámara principal. La fuente de cámara se coloca debajo del navegador en LIVE Studio. -->
-    <section class="camera-frame host-camera-frame" aria-label="Zona para cámara principal">
-      <div class="frame-label">CÁMARA PRINCIPAL</div>
-      <div class="helm-badge" aria-hidden="true">⎈</div>
-    </section>
+    <!--
+      Las cámaras NO se dibujan aquí.
+      LIVE Studio usa esos espacios con sus propias fuentes:
+      - cámara principal: superior izquierda
+      - 4 comentaristas: columna derecha
+      El overlay solamente ocupa el espacio del marcador y las animaciones.
+    -->
 
-    <!-- Cuatro ventanillas de comentaristas. Orden visual: 1 abajo → 4 arriba. -->
-    <section class="commentator-column" aria-label="Columna de comentaristas">
-      <div class="camera-frame commentator-frame commentator-4"><span>COMENTARISTA 4</span></div>
-      <div class="camera-frame commentator-frame commentator-3"><span>COMENTARISTA 3</span></div>
-      <div class="camera-frame commentator-frame commentator-2"><span>COMENTARISTA 2</span></div>
-      <div class="camera-frame commentator-frame commentator-1"><span>COMENTARISTA 1</span></div>
-    </section>
-
-    <!-- Zona libre para el chat. Solo se muestra con ?guides=1 -->
+    <!-- Zona inferior reservada al chat. Solo visible si se abre con ?guides=1 -->
     <div class="chat-safe-zone" aria-hidden="true"><span>ZONA LIBRE PARA CHAT</span></div>
 
-    <!-- Marcador compacto. Conserva todos los IDs utilizados por overlay.js -->
+    <!-- Marcador premium. Conserva todos los IDs usados por overlay.js -->
     <section class="scorebug" id="scorebug">
+      <div class="scorebug-accent accent-left"></div>
+      <div class="scorebug-accent accent-right"></div>
+
       <div class="topbar">
-        <div class="live-brand"><span class="live-dot"></span> BÉISBOL EN VIVO</div>
+        <div class="live-brand"><span class="live-dot"></span>BÉISBOL EN VIVO</div>
         <div class="inning-pill">
           <span id="halfArrow">▲</span>
           <span id="halfLabel">ALTA</span>
@@ -44,16 +41,18 @@
             <div class="team-badge" id="awayBadge">MAG</div>
             <div class="team-name" id="awayName">MAGALLANES</div>
           </div>
-          <div class="team-score" id="awayRuns">0</div>
-          <div class="rhe-row">
-            <span><small>R</small><b id="awayR">0</b></span>
-            <span><small>H</small><b id="awayH">0</b></span>
-            <span><small>E</small><b id="awayE">0</b></span>
+          <div class="score-row">
+            <div class="team-score" id="awayRuns">0</div>
+            <div class="rhe-row" aria-label="Carreras hits errores visitante">
+              <span><small>R</small><b id="awayR">0</b></span>
+              <span><small>H</small><b id="awayH">0</b></span>
+              <span><small>E</small><b id="awayE">0</b></span>
+            </div>
           </div>
         </article>
 
         <div class="center-panel">
-          <div class="batting-label">BATEA <strong id="battingTeam">MAGALLANES</strong></div>
+          <div class="batting-label"><span>BATEA</span><strong id="battingTeam">MAGALLANES</strong></div>
           <div class="diamond-wrap" aria-label="Corredores en bases">
             <div class="diamond-lines"></div>
             <div class="base second" id="baseSecond"><span>2</span></div>
@@ -84,11 +83,13 @@
             <div class="team-name" id="homeName">RIVAL</div>
             <div class="team-badge" id="homeBadge">RIV</div>
           </div>
-          <div class="team-score" id="homeRuns">0</div>
-          <div class="rhe-row">
-            <span><small>R</small><b id="homeR">0</b></span>
-            <span><small>H</small><b id="homeH">0</b></span>
-            <span><small>E</small><b id="homeE">0</b></span>
+          <div class="score-row reverse-score">
+            <div class="team-score" id="homeRuns">0</div>
+            <div class="rhe-row" aria-label="Carreras hits errores local">
+              <span><small>R</small><b id="homeR">0</b></span>
+              <span><small>H</small><b id="homeH">0</b></span>
+              <span><small>E</small><b id="homeE">0</b></span>
+            </div>
           </div>
         </article>
       </div>
@@ -100,17 +101,14 @@
       </div>
     </section>
 
-    <!-- Animaciones: se limitan al área centro-izquierda para no cubrir comentaristas ni chat. -->
+    <!-- Animaciones centradas en el área libre izquierda, sin invadir la columna de comentaristas -->
     <section class="fx-layer" id="fxLayer" aria-live="polite">
       <div class="fx-glow"></div>
       <div class="fx-text" id="fxText">HOME RUN</div>
     </section>
   </main>
 
-
   <script>
-    // Mantiene un lienzo interno exacto de 1080×1920 y lo escala sin deformarlo.
-    // En TikTok LIVE Studio a 1080×1920 el factor es 1:1.
     function fitOverlayCanvas() {
       const scale = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
       document.documentElement.style.setProperty("--overlay-scale", String(scale));
@@ -118,6 +116,6 @@
     fitOverlayCanvas();
     window.addEventListener("resize", fitOverlayCanvas, { passive: true });
   </script>
-  <script type="module" src="overlay.js?v=4.1.0"></script>
+  <script type="module" src="overlay.js?v=4.2.0"></script>
 </body>
 </html>

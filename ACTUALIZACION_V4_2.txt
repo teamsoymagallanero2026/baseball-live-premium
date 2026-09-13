@@ -1,0 +1,13 @@
+BASEBALL LIVE PREMIUM — V4.2
+
+CAMBIOS
+- Se eliminaron completamente los bordes, marcos y textos de cámara principal y comentaristas.
+- Esos espacios quedan 100% libres para colocar fuentes de cámara directamente en TikTok LIVE Studio.
+- El overlay ahora se concentra visualmente únicamente en el marcador y las animaciones.
+- Marcador rediseñado con apariencia broadcast premium azul marino / azul eléctrico / dorado.
+- Se mantienen intactos Firebase, control, carreras, hits, errores, bases, inning, B/S/O y animaciones.
+- Lienzo interno fijo 1080x1920.
+
+PRUEBA
+/overlay?v=4.2
+/overlay?guides=1&v=4.2   (solo muestra la zona segura del chat)
