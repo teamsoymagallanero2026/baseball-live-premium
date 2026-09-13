@@ -1,0 +1,6 @@
+V4.5.1 — FIX LOGO TEAM SOY MAGALLANERO
+
+- El logo/mark de Team Soy Magallanero en la barra superior queda incrustado directamente en overlay.html como data URI.
+- Ya no depende de que Vercel encuentre /assets/team-soy-magallanero-mark.png.
+- Se aumentó el mark a 58x58 px para mejor visibilidad.
+- No cambia Firebase, control, marcador, equipos, animaciones ni lógica del inning.

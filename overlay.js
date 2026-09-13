@@ -181,8 +181,8 @@ function render(game) {
   const home = game.teams.home;
 
   // Regla V4.5: VISITANTE siempre izquierda / HOME siempre derecha.
-  $("homeName").textContent = home.name;
-  $("awayName").textContent = away.name;
+  $("homeNameTop").textContent = home.name;
+  $("awayNameTop").textContent = away.name;
   $("homeShort").textContent = home.short || initials(home.name);
   $("awayShort").textContent = away.short || initials(away.name);
   setTeamLogo("home", home);

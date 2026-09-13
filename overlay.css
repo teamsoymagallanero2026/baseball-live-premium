@@ -1471,3 +1471,200 @@ html, body {
 .brand-mark {
   filter: drop-shadow(0 8px 16px rgba(0,0,0,.22));
 }
+
+
+/* =========================================================
+   V4.6 — MATCHUP STRIP + MÁS ALTURA + TODO VISIBLE
+   ========================================================= */
+.scorebug {
+  width: 900px;
+  height: 610px;
+  left: 18px;
+  top: 565px;
+  border-radius: 32px;
+}
+.scorebug-topbar {
+  height: 78px;
+  padding: 0 28px;
+}
+.brand-copy strong {
+  font-size: 24px;
+  letter-spacing: .02em;
+}
+.brand-kicker {
+  font-size: 13px;
+}
+.inning-pill {
+  min-width: 170px;
+  height: 56px;
+}
+.inning-pill span { font-size: 18px; }
+.inning-pill strong { font-size: 28px; }
+
+.matchup-band {
+  height: 92px;
+  margin: 0 18px;
+  padding: 10px 18px;
+  border-radius: 26px;
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
+  align-items: center;
+  gap: 8px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.13), rgba(255,255,255,.03) 42%, rgba(0,0,0,.16) 100%),
+    linear-gradient(90deg, rgba(22,108,212,.34), rgba(7,20,46,.18) 42%, rgba(7,20,46,.18) 58%, rgba(255,198,43,.24));
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 10px 22px rgba(0,0,0,.16), 0 0 24px rgba(49,194,255,.10);
+}
+.matchup-side { min-width: 0; }
+.matchup-role {
+  font-size: 12px;
+  letter-spacing: .22em;
+  font-weight: 900;
+  color: rgba(221,237,255,.82);
+  margin-bottom: 4px;
+}
+.matchup-home { text-align: right; }
+.matchup-name {
+  font-size: 34px;
+  font-weight: 1000;
+  line-height: .95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fdfefe;
+  text-shadow: 0 2px 0 rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.24), 0 0 18px rgba(255,255,255,.16);
+}
+.matchup-away .matchup-name { text-align: left; }
+.matchup-home .matchup-name { text-align: right; }
+.matchup-vs {
+  justify-self: center;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  font-size: 42px;
+  font-weight: 1000;
+  letter-spacing: .02em;
+  color: var(--silver);
+  text-shadow: 0 2px 0 rgba(0,0,0,.30), 0 0 26px rgba(255,255,255,.16);
+  background: linear-gradient(90deg, rgba(49,194,255,.14), rgba(255,255,255,.02), rgba(255,200,33,.14));
+  border-radius: 18px;
+}
+
+.scorebug-main {
+  height: 346px;
+  grid-template-columns: 1fr 268px 1fr;
+  gap: 0;
+}
+.team-side {
+  padding: 16px 16px 12px;
+}
+.team-role, .team-head, .team-copy, .team-copy-right, .team-short, .team-name { display: none !important; }
+.team-panel-glass {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+}
+.team-upper {
+  min-height: 168px;
+  display: grid;
+  grid-template-columns: 1fr 116px;
+  align-items: center;
+  gap: 14px;
+}
+.team-home .team-upper {
+  grid-template-columns: 116px 1fr;
+}
+.team-logo-shell {
+  width: 138px;
+  height: 138px;
+  justify-self: start;
+  border-radius: 50%;
+}
+.team-home .team-logo-shell { justify-self: end; }
+.team-logo { width: 76%; height: 76%; }
+.team-score-wrap {
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  min-width: 116px;
+  min-height: 160px;
+  background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.05) 20%, rgba(0,0,0,.18) 100%);
+  border: 1px solid rgba(255,255,255,.16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), inset 0 -12px 18px rgba(0,0,0,.18), 0 10px 22px rgba(0,0,0,.18);
+}
+.team-score {
+  font-size: 158px;
+  line-height: .74;
+  justify-self: center !important;
+}
+.rhe-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 10px;
+}
+.rhe-row span {
+  min-width: 0;
+  min-height: 96px;
+  border-radius: 18px;
+  padding: 9px 0 7px;
+}
+.rhe-row small { font-size: 13px; margin-bottom: 4px; }
+.rhe-row b { font-size: 42px; line-height: 1; }
+
+.center-panel {
+  padding: 10px 16px 12px;
+}
+.batting-pill {
+  min-height: 50px;
+  border-radius: 20px;
+  font-size: 12px;
+  letter-spacing: .09em;
+}
+.batting-pill strong { font-size: 15px; }
+.diamond-wrap {
+  width: 186px;
+  height: 186px;
+  margin: 12px auto 10px;
+}
+.count-panel {
+  width: 100%;
+  padding: 14px 14px 12px;
+  gap: 10px;
+  border-radius: 22px;
+}
+.count-line { min-height: 38px; gap: 11px; }
+.count-letter { width: 28px; font-size: 22px; }
+.count-line i { width: 30px; height: 30px; }
+
+.scorebug-bottombar {
+  height: 94px;
+  padding: 0 24px;
+  gap: 16px;
+}
+.last-play-label {
+  font-size: 13px;
+  letter-spacing: .18em;
+  flex: 0 0 auto;
+}
+.last-play {
+  font-size: 32px;
+  line-height: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.status-chip {
+  min-width: 112px;
+  height: 40px;
+  font-size: 13px;
+}
+
+.chat-safe-zone { top: 1176px; }
+.fx-layer { top: 344px; bottom: 738px; right: 188px; }
