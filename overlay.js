@@ -80,26 +80,36 @@ function setTeamLogo(side, team) {
   if (!image || !fallback || !shell) return;
 
   fallback.textContent = team.short || initials(team.name);
+  image.alt = "";
 
   const logo = String(team.logo || "").trim();
   if (!logo) {
     image.removeAttribute("src");
     image.style.display = "none";
+    image.dataset.logoKey = "";
     shell.classList.remove("has-logo");
     return;
   }
 
+  image.style.display = "none";
   image.onload = () => {
     image.style.display = "block";
     shell.classList.add("has-logo");
   };
   image.onerror = () => {
+    image.removeAttribute("src");
     image.style.display = "none";
+    image.dataset.logoKey = "";
     shell.classList.remove("has-logo");
   };
-  const resolved = logoSrcWithVersion(logo, team.logoVersion);
-  if (image.src !== resolved) {
+
+  const resolved = logoSrcWithVersion(logo, team.logoVersion || Date.now());
+  const logoKey = `${logo}::${team.logoVersion || 0}`;
+  if (image.dataset.logoKey !== logoKey) {
+    image.dataset.logoKey = logoKey;
     image.removeAttribute("src");
+    requestAnimationFrame(() => { image.src = resolved; });
+  } else if (!image.getAttribute("src")) {
     image.src = resolved;
   }
 }

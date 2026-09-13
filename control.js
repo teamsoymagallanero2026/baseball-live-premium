@@ -304,6 +304,7 @@ async function handleTeamField(key, field, value) {
   if (field === "logo") {
     next.teams[key].logo = value.trim();
     next.teams[key].logoVersion = Date.now();
+    next.teams[key].logoSourceUrl = value.trim();
   }
   if (field === "primary") next.teams[key].primary = normalizeHexColor(value, defaultTeamTheme(key, next.teams[key]).primary);
   if (field === "secondary") next.teams[key].secondary = normalizeHexColor(value, defaultTeamTheme(key, next.teams[key]).secondary);
@@ -347,6 +348,53 @@ async function compressLogo(file) {
   return data;
 }
 
+async function urlToDataUrl(url) {
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) throw new Error("No se pudo descargar el logo desde la URL");
+  const blob = await response.blob();
+  if (!blob.type.startsWith("image/")) throw new Error("La URL no contiene una imagen válida");
+  if (blob.size > 8 * 1024 * 1024) throw new Error("La imagen de la URL es demasiado pesada");
+  return await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("No se pudo convertir el logo"));
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function handleLogoUrl(key, rawUrl) {
+  const url = String(rawUrl || "").trim();
+  if (!url) return;
+  try {
+    showToast("Descargando logo...");
+    let storedLogo = url;
+    try {
+      storedLogo = await urlToDataUrl(url);
+    } catch (innerError) {
+      console.warn("No se pudo convertir a dataURL, se guardará la URL directa", innerError);
+    }
+    const next = clone(game);
+    next.teams[key].logo = storedLogo;
+    next.teams[key].logoVersion = Date.now();
+    next.teams[key].logoSourceUrl = url;
+    await commit(next, "Logo actualizado");
+  } catch (error) {
+    showToast(error?.message || "No se pudo cargar el logo desde la URL");
+  }
+}
+
+async function refreshLogoFromSource(key) {
+  const current = game.teams[key];
+  const source = String(current.logoSourceUrl || "").trim();
+  if (source) {
+    await handleLogoUrl(key, source);
+    return;
+  }
+  const next = clone(game);
+  next.teams[key].logoVersion = Date.now();
+  await commit(next, `Logo ${key.toUpperCase()} refrescado`);
+}
+
 async function handleLogoFile(key, file) {
   try {
     showToast("Procesando logo...");
@@ -354,6 +402,7 @@ async function handleLogoFile(key, file) {
     const next = clone(game);
     next.teams[key].logo = dataUrl;
     next.teams[key].logoVersion = Date.now();
+    next.teams[key].logoSourceUrl = "";
     await commit(next, "Logo actualizado");
   } catch (error) {
     showToast(error?.message || "No se pudo cargar el logo");
@@ -364,6 +413,7 @@ async function clearLogo(key) {
   const next = clone(game);
   next.teams[key].logo = "";
   next.teams[key].logoVersion = Date.now();
+  next.teams[key].logoSourceUrl = "";
   await commit(next, "Logo eliminado");
 }
 
@@ -441,12 +491,12 @@ function bindEvents() {
   $("homeSecondaryInput").addEventListener("change", e => handleTeamField("home", "secondary", e.target.value));
   $("awayPrimaryInput").addEventListener("change", e => handleTeamField("away", "primary", e.target.value));
   $("awaySecondaryInput").addEventListener("change", e => handleTeamField("away", "secondary", e.target.value));
-  $("homeLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleTeamField("home", "logo", e.target.value); });
-  $("awayLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleTeamField("away", "logo", e.target.value); });
+  $("homeLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleLogoUrl("home", e.target.value); });
+  $("awayLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleLogoUrl("away", e.target.value); });
   $("homeLogoFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) handleLogoFile("home", f); e.target.value = ""; });
   $("awayLogoFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) handleLogoFile("away", f); e.target.value = ""; });
-  $("homeLogoRefreshBtn").addEventListener("click", async () => { const next = clone(game); next.teams.home.logoVersion = Date.now(); await commit(next, "Logo HOME refrescado"); });
-  $("awayLogoRefreshBtn").addEventListener("click", async () => { const next = clone(game); next.teams.away.logoVersion = Date.now(); await commit(next, "Logo VISITANTE refrescado"); });
+  $("homeLogoRefreshBtn").addEventListener("click", () => refreshLogoFromSource("home"));
+  $("awayLogoRefreshBtn").addEventListener("click", () => refreshLogoFromSource("away"));
   $("homeLogoClearBtn").addEventListener("click", () => clearLogo("home"));
   $("awayLogoClearBtn").addEventListener("click", () => clearLogo("away"));
 
@@ -493,6 +543,7 @@ function bindEvents() {
       next.teams[key].short = game.teams[key].short;
       next.teams[key].logo = game.teams[key].logo;
       next.teams[key].logoVersion = game.teams[key].logoVersion;
+      next.teams[key].logoSourceUrl = game.teams[key].logoSourceUrl || "";
       next.teams[key].primary = game.teams[key].primary;
       next.teams[key].secondary = game.teams[key].secondary;
     }

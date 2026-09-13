@@ -1796,3 +1796,109 @@ html, body {
 
 .chat-safe-zone { top: 1288px; }
 .fx-layer { top: 352px; bottom: 630px; right: 184px; }
+
+/* =========================================================
+   V4.6.3 — FIX LOGOS + OUTS VISIBLES + LEGIBILIDAD PRO
+   ========================================================= */
+.scorebug {
+  width: 940px;
+  height: 760px;
+  top: 548px;
+}
+.scorebug-topbar {
+  height: 84px;
+  padding: 0 30px;
+}
+.matchup-band {
+  height: 104px;
+  margin: 0 18px;
+  padding: 12px 22px;
+  grid-template-columns: 1fr 130px 1fr;
+}
+.matchup-role { font-size: 14px; }
+.matchup-name { font-size: 38px; }
+.matchup-vs { font-size: 46px; }
+.scorebug-main {
+  height: 438px;
+  grid-template-columns: 1fr 286px 1fr;
+}
+.team-side { padding: 18px 18px 20px; }
+.team-panel-glass { gap: 20px; }
+.team-upper {
+  min-height: 192px;
+  grid-template-columns: 1fr 128px;
+  gap: 16px;
+}
+.team-home .team-upper { grid-template-columns: 128px 1fr; }
+.team-logo-shell {
+  width: 150px;
+  height: 150px;
+}
+.team-score-wrap {
+  min-width: 128px;
+  min-height: 178px;
+}
+.team-score {
+  font-size: 172px;
+  line-height: .72;
+}
+.rhe-row {
+  gap: 14px;
+  align-items: stretch;
+}
+.rhe-row span {
+  min-height: 118px;
+  border-radius: 18px;
+  padding: 10px 0 10px;
+}
+.rhe-row small {
+  font-size: 15px;
+  margin-bottom: 7px;
+}
+.rhe-row b { font-size: 50px; }
+.center-panel { padding: 12px 16px 22px; }
+.batting-pill { min-height: 54px; font-size: 13px; }
+.batting-pill strong { font-size: 16px; }
+.diamond-wrap {
+  width: 198px;
+  height: 198px;
+  margin: 14px auto 14px;
+}
+.count-panel {
+  width: 100%;
+  padding: 18px 20px 18px;
+  gap: 14px;
+  border-radius: 22px;
+  margin-top: 4px;
+}
+.count-line {
+  min-height: 46px;
+  gap: 14px;
+}
+.count-letter {
+  width: 34px;
+  font-size: 26px;
+  color: rgba(240,247,255,.98);
+  text-shadow: 0 2px 6px rgba(0,0,0,.26);
+}
+.count-line i {
+  width: 34px;
+  height: 34px;
+}
+.scorebug-bottombar {
+  height: 134px;
+  padding: 0 28px;
+  gap: 18px;
+}
+.last-play-label { font-size: 14px; }
+.last-play {
+  font-size: 38px;
+  line-height: 1;
+}
+.status-chip {
+  min-width: 118px;
+  height: 44px;
+  font-size: 13px;
+}
+.chat-safe-zone { top: 1338px; }
+.fx-layer { top: 352px; bottom: 576px; right: 178px; }
