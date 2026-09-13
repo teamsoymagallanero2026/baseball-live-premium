@@ -883,3 +883,298 @@ body.show-guides .chat-safe-zone span {
   text-shadow: 0 0 10px rgba(54,229,143,.65);
   letter-spacing: .10em;
 }
+
+/* =========================================================
+   V4.5.2 NITIDEZ TIKTOK LIVE
+   Mayor contraste, menos transparencia difusa y lectura más fuerte.
+   ========================================================= */
+html, body {
+  image-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+
+.scorebug {
+  left: 18px;
+  top: 554px;
+  width: 844px;
+  height: 442px;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 10% 16%, rgba(70, 196, 255, .33), transparent 26%),
+    radial-gradient(circle at 90% 20%, rgba(255, 210, 69, .22), transparent 28%),
+    linear-gradient(155deg, #0d4e9b 0%, #082d63 28%, #04152e 67%, #020811 100%);
+  border: 1px solid rgba(212,240,255,.64);
+  box-shadow:
+    0 36px 90px rgba(0,0,0,.66),
+    0 10px 24px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -2px 0 rgba(0,0,0,.48),
+    0 0 0 1px rgba(74,191,255,.12);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.scorebug::before {
+  background:
+    repeating-linear-gradient(118deg, transparent 0 48px, rgba(255,255,255,.028) 49px 50px),
+    linear-gradient(90deg, rgba(48,161,255,.18), transparent 22%, transparent 78%, rgba(255,208,56,.14));
+}
+.scorebug::after {
+  left: 20px;
+  right: 20px;
+  height: 5px;
+  background: linear-gradient(90deg, #46c4ff, rgba(70,196,255,.18) 35%, rgba(255,208,56,.18) 68%, #ffd23b);
+  box-shadow: 0 0 28px rgba(70,196,255,.44), 0 0 24px rgba(255,210,69,.28);
+}
+.glass-sheen {
+  opacity: .75;
+  background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.04) 34%, transparent 70%);
+}
+.scorebug-topbar {
+  height: 74px;
+  padding: 0 24px;
+  background: linear-gradient(180deg, rgba(5,14,31,.96), rgba(4,12,27,.88));
+  border-bottom-color: rgba(255,255,255,.12);
+}
+.scorebug-main {
+  height: 300px;
+  grid-template-columns: 1fr 232px 1fr;
+}
+.scorebug-bottombar {
+  height: 68px;
+  padding: 0 22px;
+  border-top-color: rgba(255,255,255,.10);
+  background:
+    linear-gradient(180deg, rgba(6,16,34,.96), rgba(3,10,22,.94)),
+    #051121;
+}
+.brand-mark {
+  width: 60px;
+  height: 60px;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,.44)) drop-shadow(0 0 16px rgba(70,196,255,.20));
+}
+.brand-copy strong {
+  font-size: 19px;
+  letter-spacing: .06em;
+  color: #ffffff;
+  text-shadow: 0 2px 14px rgba(0,0,0,.55);
+}
+.brand-kicker { color: #c0efff; }
+
+.inning-pill {
+  min-width: 132px;
+  height: 44px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0)),
+    linear-gradient(145deg, rgba(255,203,45,.28), rgba(255,203,45,.12));
+  border-color: rgba(255,213,80,.60);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 8px 20px rgba(0,0,0,.26), 0 0 18px rgba(255,203,45,.14);
+}
+.inning-pill strong { font-size: 20px; }
+
+.team-side { padding: 18px 18px 15px; }
+.team-away {
+  background: linear-gradient(90deg, rgba(37,148,255,.22), rgba(8,39,83,.18) 54%, transparent 84%);
+}
+.team-home {
+  background: linear-gradient(270deg, rgba(255,203,45,.16), rgba(53,34,5,.10) 52%, transparent 84%);
+}
+.team-role {
+  color: #bdd3eb;
+  font-size: 11px;
+  letter-spacing: .20em;
+}
+.team-short {
+  font-size: 10px;
+  color: #bbebff;
+  text-shadow: 0 0 12px rgba(70,196,255,.14);
+}
+.team-name {
+  max-width: 196px;
+  font-size: 25px;
+  line-height: .96;
+  color: #ffffff;
+  text-shadow: 0 3px 14px rgba(0,0,0,.52);
+}
+
+.team-logo-shell {
+  width: 74px;
+  height: 74px;
+  flex: 0 0 74px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 30% 18%, rgba(255,255,255,.46), transparent 28%),
+    linear-gradient(160deg, rgba(255,255,255,.28), rgba(255,255,255,.06) 40%),
+    linear-gradient(145deg, #1775c7, #0a3776 58%, #04172f);
+  border: 1px solid rgba(214,241,255,.64);
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,.30),
+    inset 0 -4px 10px rgba(0,0,0,.36),
+    0 12px 28px rgba(0,0,0,.40),
+    0 0 28px rgba(70,196,255,.18);
+}
+.team-logo-shell::after {
+  inset: 4px;
+  border-color: rgba(255,255,255,.12);
+}
+.team-side.is-magallanes .team-logo-shell {
+  border-color: rgba(255,219,102,.82);
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,.30),
+    inset 0 -4px 10px rgba(0,0,0,.36),
+    0 0 0 2px rgba(255,200,33,.12),
+    0 14px 30px rgba(0,0,0,.40),
+    0 0 32px rgba(255,210,69,.22);
+}
+
+.score-zone {
+  margin-top: 13px;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+}
+.score-zone-right { grid-template-columns: 1fr 140px; }
+.team-score {
+  font-size: 138px;
+  line-height: .74;
+  letter-spacing: -.055em;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 26%, #dde8f4 58%, #aebed1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 11px 16px rgba(0,0,0,.46));
+}
+.team-side.is-magallanes .team-score {
+  background: linear-gradient(180deg, #fff6c8 0%, #ffe981 18%, #ffd138 50%, #f3ad15 72%, #aa6b00 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 11px 18px rgba(0,0,0,.48)) drop-shadow(0 0 12px rgba(255,210,69,.12));
+}
+.rhe-row { gap: 7px; }
+.rhe-row span {
+  min-height: 68px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.045)),
+    rgba(6,20,43,.80);
+  border: 1px solid rgba(196,231,255,.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 -3px 7px rgba(0,0,0,.26);
+}
+.rhe-row small {
+  color: #c5d7ec;
+  font-size: 10px;
+}
+.rhe-row b {
+  font-size: 33px;
+  color: #ffffff;
+}
+
+.center-panel {
+  padding: 12px 12px 10px;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(70,196,255,.16), transparent 61%),
+    linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.10));
+}
+.batting-pill {
+  min-height: 40px;
+  font-size: 9.5px;
+  color: #d0e5f8;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.03)),
+    rgba(4,17,37,.80);
+  border-color: rgba(176,227,255,.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 4px 12px rgba(0,0,0,.12);
+}
+.batting-pill strong { color: #ffffff; }
+
+.diamond-wrap {
+  width: 170px;
+  height: 170px;
+  margin: 5px 0 3px;
+}
+.diamond-lines {
+  border-width: 3px;
+  border-color: rgba(103,210,255,.76);
+  box-shadow: inset 0 0 24px rgba(15,120,215,.15), 0 0 26px rgba(70,196,255,.18);
+}
+.base {
+  width: 27%;
+  border-radius: 8px;
+  border-width: 3px;
+  border-color: rgba(255,255,255,.90);
+  box-shadow:
+    0 9px 16px rgba(0,0,0,.42),
+    inset 0 2px 2px rgba(255,255,255,.75),
+    inset 0 -4px 8px rgba(85,112,145,.18);
+}
+.base span {
+  font-size: 10px;
+  color: #102644;
+  opacity: .78;
+}
+.base.active {
+  box-shadow:
+    0 0 0 2px rgba(255,211,84,.18),
+    0 0 22px rgba(255,211,54,.98),
+    0 0 52px rgba(255,193,22,.58),
+    0 10px 20px rgba(0,0,0,.32),
+    inset 0 2px 2px rgba(255,255,255,.65);
+  transform: rotate(45deg) scale(1.12);
+}
+
+.count-panel {
+  gap: 6px;
+  padding: 6px 8px 3px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(7,19,39,.92), rgba(4,11,23,.86));
+  border: 1px solid rgba(205,237,255,.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+}
+.count-line { gap: 9px; min-height: 27px; }
+.count-letter {
+  width: 24px;
+  font-size: 13px;
+  color: #ebf6ff;
+}
+.count-line i {
+  width: 24px;
+  height: 24px;
+  border-width: 2px;
+  border-color: rgba(219,240,255,.28);
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255,255,255,.23), transparent 26%),
+    linear-gradient(180deg, #2a3b52, #0a1421);
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,.06),
+    inset 0 -5px 8px rgba(0,0,0,.46),
+    0 3px 8px rgba(0,0,0,.30);
+}
+.balls-line i.on { box-shadow: 0 0 16px rgba(54,229,143,.98), 0 0 32px rgba(54,229,143,.48), inset 0 2px 4px rgba(255,255,255,.40); }
+.strikes-line i.on { box-shadow: 0 0 16px rgba(255,200,33,.98), 0 0 32px rgba(255,200,33,.48), inset 0 2px 4px rgba(255,255,255,.40); }
+.outs-line i.on { box-shadow: 0 0 16px rgba(255,75,99,.98), 0 0 32px rgba(255,75,99,.48), inset 0 2px 4px rgba(255,255,255,.40); }
+
+.last-play-label {
+  color: #c6d8ec;
+  font-size: 9px;
+}
+.last-play {
+  font-size: 20px;
+  text-shadow: 0 2px 8px rgba(0,0,0,.35);
+}
+.status-chip {
+  min-width: 86px;
+  font-size: 10px;
+  font-weight: 1000;
+  box-shadow: inset 0 1px rgba(255,255,255,.40), 0 0 20px rgba(54,229,143,.14);
+}
+
+.fx-text {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.11), transparent 32%),
+    linear-gradient(145deg, rgba(10,40,82,.99), rgba(3,11,25,.995));
+  border-color: #ffd33c;
+  box-shadow: 0 42px 92px rgba(0,0,0,.66), 0 0 64px rgba(255,200,33,.18), inset 0 1px rgba(255,255,255,.18);
+  text-shadow: 0 6px 0 rgba(0,0,0,.30), 0 0 34px rgba(255,200,33,.26);
+}
+
+/* ligero ajuste para overlay en canvas vertical */
+.chat-safe-zone { top: 1012px; }
+.fx-layer { top: 325px; bottom: 795px; right: 220px; }

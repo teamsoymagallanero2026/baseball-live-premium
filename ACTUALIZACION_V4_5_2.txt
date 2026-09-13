@@ -1,0 +1,20 @@
+BASEBALL LIVE PREMIUM — ACTUALIZACIÓN V4.5.2
+=============================================
+
+VERSIÓN: V4.5.2 — NITIDEZ TIKTOK LIVE
+
+MEJORAS PRINCIPALES
+- marcador con mayor contraste y menos apariencia opaca
+- fondo del scorebug más sólido y menos translúcido
+- números de carreras más grandes
+- cajas R/H/E más visibles
+- semáforos B/S/O más grandes y brillantes
+- logos con look cristal más limpio
+- mantiene visitante a la izquierda y home club a la derecha
+- mantiene animaciones, control, Firebase y edición de equipos/logos
+
+IMPLEMENTACIÓN
+1) subir todo el contenido de esta carpeta al repositorio GitHub
+2) confirmar reemplazo de archivos
+3) esperar despliegue automático en Vercel
+4) abrir /overlay?v=4.5.2 y hacer Ctrl + F5
