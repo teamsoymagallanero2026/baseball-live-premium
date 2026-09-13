@@ -1,0 +1,33 @@
+BASEBALL LIVE PREMIUM — V3 ANIMACIONES CORREGIDAS
+=================================================
+
+CORRECCIONES
+- + Carrera dispara automáticamente ¡CARRERA!.
+- + Hit dispara automáticamente ¡HIT!.
+- + Error dispara automáticamente ¡ERROR!.
+- Cada animación tiene ID único, así que dos eventos iguales seguidos también se reproducen.
+- Si /overlay está en una pestaña oculta, la animación no se pierde: se reproduce al volver a verla.
+- Si cambias de pestaña durante una animación, se reproduce de nuevo completa al regresar.
+- Duración aumentada a ~3.6 s para hacer la prueba más visible.
+- Se añadió control anti-caché para evitar que Vercel/navegador siga cargando JS/CSS anterior.
+
+ARCHIVOS MODIFICADOS
+- control.js
+- overlay.js
+- overlay.css
+- config.js
+- control.html
+- overlay.html
+- vercel.json
+- README.txt
+
+PRUEBA RECOMENDADA
+1. Sube/reemplaza los archivos del proyecto en GitHub.
+2. Espera que Vercel termine el nuevo deployment.
+3. Abre /control y /overlay.
+4. En /control pulsa MAGALLANES > CARRERAS > +.
+5. El marcador debe subir y el overlay debe mostrar ¡CARRERA! aproximadamente 3.6 segundos.
+
+NOTA
+Para una prueba visual inmediata puedes dejar ambas ventanas visibles. Si usas dos pestañas,
+esta V3 guarda la animación mientras /overlay está oculto y la reproduce al volver.

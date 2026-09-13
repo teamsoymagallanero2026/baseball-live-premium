@@ -47,7 +47,14 @@ async function commit(next, message = "Actualizado", remember = true) {
 }
 
 function fx(next, type) {
-  next.fx = { type, nonce: Date.now() };
+  const at = Date.now();
+  const unique = (globalThis.crypto && typeof globalThis.crypto.randomUUID === "function")
+    ? globalThis.crypto.randomUUID()
+    : Math.random().toString(36).slice(2);
+
+  // Cada evento lleva un identificador único y una marca de tiempo.
+  // Así dos carreras seguidas siempre generan una animación nueva.
+  next.fx = { type, nonce: `${at}-${unique}`, at };
 }
 
 function resetCount(next) { next.count.balls = 0; next.count.strikes = 0; }

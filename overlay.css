@@ -162,8 +162,8 @@ body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSyst
 .status-chip { margin-left: auto; flex: 0 0 auto; padding: 7px 10px; border-radius: 999px; font-size: 10px; font-weight: 900; letter-spacing: .1em; color: #06152e; background: var(--green); }
 .status-chip.local { background: var(--gold); color: #2b2100; }
 
-.fx-layer { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; opacity: 0; z-index: 99; }
-.fx-layer.show { animation: fxIn 2.35s cubic-bezier(.2,.8,.2,1); }
+.fx-layer { position: fixed; inset: 0; display: grid; place-items: center; pointer-events: none; opacity: 0; z-index: 9999; }
+.fx-layer.show { animation: fxIn 3.55s cubic-bezier(.2,.8,.2,1) both; }
 .fx-glow { position: absolute; width: min(110vw, 1150px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(255,201,40,.35), rgba(23,120,255,.18) 35%, transparent 68%); filter: blur(18px); transform: scale(.75); }
 .fx-text {
   position: relative;
@@ -182,11 +182,12 @@ body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSyst
   box-shadow: 0 40px 90px rgba(0,0,0,.6), 0 0 60px rgba(255,201,40,.15);
 }
 @keyframes fxIn {
-  0% { opacity: 0; transform: scale(.78); }
-  12% { opacity: 1; transform: scale(1.04); }
-  20% { transform: scale(1); }
-  78% { opacity: 1; }
-  100% { opacity: 0; transform: scale(1.03); }
+  0% { opacity: 0; transform: scale(.55) rotate(-2deg); }
+  9% { opacity: 1; transform: scale(1.13) rotate(1deg); }
+  16% { transform: scale(.98) rotate(0); }
+  24% { transform: scale(1.035); }
+  76% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.12); }
 }
 
 @media (max-width: 760px) {

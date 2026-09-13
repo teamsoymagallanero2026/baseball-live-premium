@@ -123,3 +123,18 @@ ARCHIVOS QUE NORMALMENTE EDITARÁS
 - overlay.css: solo si más adelante quieres cambiar colores/tamaños.
 
 FIN
+
+
+V2 - ANIMACIONES AUTOMÁTICAS
+- Al sumar +1 Carrera desde el panel del equipo se dispara CARRERA en el overlay.
+- Al sumar +1 Hit se dispara HIT.
+- Al sumar +1 Error se dispara ERROR.
+
+
+V3 - ANIMACIONES ROBUSTAS
+-------------------------
+- Cada animación usa un identificador único, incluso si ocurren dos carreras seguidas.
+- Si /overlay está abierto en otra pestaña oculta, la animación queda pendiente y se reproduce al volver a verla.
+- Si el usuario cambia de pestaña a mitad de la animación, se reproduce completa al regresar.
+- Las animaciones duran aproximadamente 3.6 segundos para que sean más fáciles de comprobar.
+- Un evento antiguo no se reproduce al abrir el overlay mucho después.

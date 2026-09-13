@@ -25,7 +25,7 @@ export const DEFAULT_GAME = {
   inning: { number: 1, half: "top" },
   bases: { first: false, second: false, third: false },
   lastPlay: "PLAY BALL",
-  fx: { type: "", nonce: 0 },
+  fx: { type: "", nonce: "", at: 0 },
   updatedAt: 0
 };
 
