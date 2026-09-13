@@ -12,7 +12,7 @@ import {
 
 const $ = id => document.getElementById(id);
 const HISTORY_KEY = "baseball-live-premium-history-v1";
-const MAGALLANES_META = { name: "MAGALLANES", short: "MAG", logo: "./assets/magallanes.png", primary: "#1D8FFF", secondary: "#FFD54A" };
+const MAGALLANES_META = { name: "MAGALLANES", short: "MAG", logo: "./assets/magallanes.png", logoVersion: 1, primary: "#1D8FFF", secondary: "#FFD54A" };
 
 let game = normalizeGame(DEFAULT_GAME);
 let canWrite = mode === "local";
@@ -208,6 +208,19 @@ async function action(type) {
   await commit(next, `${next.teams[key].name}: ${next.lastPlay}`);
 }
 
+function logoSrcWithVersion(src, version = 1) {
+  const value = String(src || "").trim();
+  if (!value || value.startsWith("data:") || value.startsWith("blob:")) return value;
+  try {
+    const url = new URL(value, window.location.href);
+    url.searchParams.set("logo_v", String(version || 1));
+    return url.href;
+  } catch {
+    const sep = value.includes("?") ? "&" : "?";
+    return `${value}${sep}logo_v=${encodeURIComponent(String(version || 1))}`;
+  }
+}
+
 function renderLogoPreview(side, team) {
   const img = $(`${side}LogoPreview`);
   const fallback = $(`${side}LogoFallback`);
@@ -229,7 +242,11 @@ function renderLogoPreview(side, team) {
   }
   img.onload = () => { img.style.display = "block"; shell.classList.add("has-logo"); };
   img.onerror = () => { img.style.display = "none"; shell.classList.remove("has-logo"); };
-  img.src = logo;
+  const resolved = logoSrcWithVersion(logo, team.logoVersion);
+  if (img.src !== resolved) {
+    img.removeAttribute("src");
+    img.src = resolved;
+  }
 }
 
 function render(g) {
@@ -284,7 +301,10 @@ async function handleTeamField(key, field, value) {
   const next = clone(game);
   if (field === "name") next.teams[key].name = value.trim() || (key === "home" ? "HOME CLUB" : "VISITANTE");
   if (field === "short") next.teams[key].short = value.trim().replace(/[^A-Za-z0-9ÁÉÍÓÚÑ]/gi, "").slice(0, 5).toUpperCase() || initials(next.teams[key].name);
-  if (field === "logo") next.teams[key].logo = value.trim();
+  if (field === "logo") {
+    next.teams[key].logo = value.trim();
+    next.teams[key].logoVersion = Date.now();
+  }
   if (field === "primary") next.teams[key].primary = normalizeHexColor(value, defaultTeamTheme(key, next.teams[key]).primary);
   if (field === "secondary") next.teams[key].secondary = normalizeHexColor(value, defaultTeamTheme(key, next.teams[key]).secondary);
   await commit(next, "Equipo actualizado");
@@ -333,6 +353,7 @@ async function handleLogoFile(key, file) {
     const dataUrl = await compressLogo(file);
     const next = clone(game);
     next.teams[key].logo = dataUrl;
+    next.teams[key].logoVersion = Date.now();
     await commit(next, "Logo actualizado");
   } catch (error) {
     showToast(error?.message || "No se pudo cargar el logo");
@@ -342,6 +363,7 @@ async function handleLogoFile(key, file) {
 async function clearLogo(key) {
   const next = clone(game);
   next.teams[key].logo = "";
+  next.teams[key].logoVersion = Date.now();
   await commit(next, "Logo eliminado");
 }
 
@@ -423,6 +445,8 @@ function bindEvents() {
   $("awayLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleTeamField("away", "logo", e.target.value); });
   $("homeLogoFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) handleLogoFile("home", f); e.target.value = ""; });
   $("awayLogoFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) handleLogoFile("away", f); e.target.value = ""; });
+  $("homeLogoRefreshBtn").addEventListener("click", async () => { const next = clone(game); next.teams.home.logoVersion = Date.now(); await commit(next, "Logo HOME refrescado"); });
+  $("awayLogoRefreshBtn").addEventListener("click", async () => { const next = clone(game); next.teams.away.logoVersion = Date.now(); await commit(next, "Logo VISITANTE refrescado"); });
   $("homeLogoClearBtn").addEventListener("click", () => clearLogo("home"));
   $("awayLogoClearBtn").addEventListener("click", () => clearLogo("away"));
 
@@ -468,6 +492,7 @@ function bindEvents() {
       next.teams[key].name = game.teams[key].name;
       next.teams[key].short = game.teams[key].short;
       next.teams[key].logo = game.teams[key].logo;
+      next.teams[key].logoVersion = game.teams[key].logoVersion;
       next.teams[key].primary = game.teams[key].primary;
       next.teams[key].secondary = game.teams[key].secondary;
     }

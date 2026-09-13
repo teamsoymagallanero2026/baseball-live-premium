@@ -1,0 +1,1 @@
+V4.6.2: corrige actualización de logos en Control y Overlay. Añade logoVersion/cache-busting y botones de refresco de logo.

@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Control Team Soy Magallanero — V4.6</title>
-  <link rel="stylesheet" href="control.css?v=4.6" />
+  <title>Control Team Soy Magallanero — V4.6.2.1</title>
+  <link rel="stylesheet" href="control.css?v=4.6.2" />
 </head>
 <body>
   <div class="app-shell">
     <header class="app-header">
       <div>
-        <div class="eyebrow">TEAM SOY MAGALLANERO · V4.6</div>
+        <div class="eyebrow">TEAM SOY MAGALLANERO · V4.6.2.1</div>
         <h1>Panel de control</h1>
       </div>
       <div class="header-actions">
@@ -71,6 +71,7 @@
           <label>Logo por URL (opcional)<input id="awayLogoUrlInput" placeholder="https://... o ./assets/logo.png" /></label>
           <div class="logo-actions">
             <label class="btn subtle upload-label">Seleccionar logo<input id="awayLogoFile" type="file" accept="image/*" hidden /></label>
+            <button class="btn ghost" id="awayLogoRefreshBtn" type="button">↻ Refrescar logo</button>
             <button class="btn ghost" id="awayLogoClearBtn" type="button">Quitar logo</button>
           </div>
 
@@ -106,6 +107,7 @@
           <label>Logo por URL (opcional)<input id="homeLogoUrlInput" placeholder="https://... o ./assets/logo.png" /></label>
           <div class="logo-actions">
             <label class="btn subtle upload-label">Seleccionar logo<input id="homeLogoFile" type="file" accept="image/*" hidden /></label>
+            <button class="btn ghost" id="homeLogoRefreshBtn" type="button">↻ Refrescar logo</button>
             <button class="btn ghost" id="homeLogoClearBtn" type="button">Quitar logo</button>
           </div>
 

@@ -60,6 +60,19 @@ function applyTeamTheme(side, team) {
   card.style.setProperty("--team-primary-rgb", hexToRgbString(primary));
   card.style.setProperty("--team-secondary-rgb", hexToRgbString(secondary));
 }
+function logoSrcWithVersion(src, version = 1) {
+  const value = String(src || "").trim();
+  if (!value || value.startsWith("data:") || value.startsWith("blob:")) return value;
+  try {
+    const url = new URL(value, window.location.href);
+    url.searchParams.set("logo_v", String(version || 1));
+    return url.href;
+  } catch {
+    const sep = value.includes("?") ? "&" : "?";
+    return `${value}${sep}logo_v=${encodeURIComponent(String(version || 1))}`;
+  }
+}
+
 function setTeamLogo(side, team) {
   const image = $(`${side}Logo`);
   const fallback = $(`${side}Badge`);
@@ -84,7 +97,11 @@ function setTeamLogo(side, team) {
     image.style.display = "none";
     shell.classList.remove("has-logo");
   };
-  image.src = logo;
+  const resolved = logoSrcWithVersion(logo, team.logoVersion);
+  if (image.src !== resolved) {
+    image.removeAttribute("src");
+    image.src = resolved;
+  }
 }
 
 function setLights(selector, activeCount) {

@@ -77,6 +77,7 @@ export function normalizeGame(input) {
       const looksMagallanes = g.teams[key].name.toUpperCase().includes("MAGALLANES");
       g.teams[key].logo = looksMagallanes ? "./assets/magallanes.png" : "";
     }
+    g.teams[key].logoVersion = Math.max(1, Number(inputTeam.logoVersion || g.teams[key].logoVersion || 1));
 
     g.teams[key].runs = Math.max(0, Number(g.teams[key].runs || 0));
     g.teams[key].hits = Math.max(0, Number(g.teams[key].hits || 0));
