@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Overlay Baseball Live Premium</title>
+  <link rel="stylesheet" href="overlay.css" />
+</head>
+<body>
+  <main class="broadcast-frame" aria-label="Marcador de béisbol en vivo">
+    <div class="narrator-safe-zone" aria-hidden="true"></div>
+
+    <section class="scorebug" id="scorebug">
+      <div class="topbar">
+        <div class="live-brand"><span class="live-dot"></span> BÉISBOL EN VIVO</div>
+        <div class="inning-pill">
+          <span id="halfArrow">▲</span>
+          <span id="halfLabel">ALTA</span>
+          <strong id="inningNumber">1</strong>
+        </div>
+      </div>
+
+      <div class="main-grid">
+        <article class="team-card away-card">
+          <div class="team-role">VISITANTE</div>
+          <div class="team-title-row">
+            <div class="team-badge" id="awayBadge">MAG</div>
+            <div class="team-name" id="awayName">MAGALLANES</div>
+          </div>
+          <div class="team-score" id="awayRuns">0</div>
+          <div class="rhe-row">
+            <span><small>R</small><b id="awayR">0</b></span>
+            <span><small>H</small><b id="awayH">0</b></span>
+            <span><small>E</small><b id="awayE">0</b></span>
+          </div>
+        </article>
+
+        <div class="center-panel">
+          <div class="batting-label">BATEA <strong id="battingTeam">MAGALLANES</strong></div>
+          <div class="diamond-wrap" aria-label="Corredores en bases">
+            <div class="diamond-lines"></div>
+            <div class="base second" id="baseSecond"><span>2</span></div>
+            <div class="base third" id="baseThird"><span>3</span></div>
+            <div class="base first" id="baseFirst"><span>1</span></div>
+            <div class="home-plate"></div>
+          </div>
+
+          <div class="count-panel">
+            <div class="count-line balls-line">
+              <span class="count-letter">B</span>
+              <i data-ball="1"></i><i data-ball="2"></i><i data-ball="3"></i>
+            </div>
+            <div class="count-line strikes-line">
+              <span class="count-letter">S</span>
+              <i data-strike="1"></i><i data-strike="2"></i>
+            </div>
+            <div class="count-line outs-line">
+              <span class="count-letter">O</span>
+              <i data-out="1"></i><i data-out="2"></i>
+            </div>
+          </div>
+        </div>
+
+        <article class="team-card home-card">
+          <div class="team-role">LOCAL</div>
+          <div class="team-title-row reverse">
+            <div class="team-name" id="homeName">RIVAL</div>
+            <div class="team-badge" id="homeBadge">RIV</div>
+          </div>
+          <div class="team-score" id="homeRuns">0</div>
+          <div class="rhe-row">
+            <span><small>R</small><b id="homeR">0</b></span>
+            <span><small>H</small><b id="homeH">0</b></span>
+            <span><small>E</small><b id="homeE">0</b></span>
+          </div>
+        </article>
+      </div>
+
+      <div class="lowerbar">
+        <div class="last-play-label">ÚLTIMA JUGADA</div>
+        <div class="last-play" id="lastPlay">PLAY BALL</div>
+        <div class="status-chip" id="connectionStatus">CONECTANDO</div>
+      </div>
+    </section>
+
+    <section class="fx-layer" id="fxLayer" aria-live="polite">
+      <div class="fx-glow"></div>
+      <div class="fx-text" id="fxText">HOME RUN</div>
+    </section>
+  </main>
+
+  <script type="module" src="overlay.js"></script>
+</body>
+</html>

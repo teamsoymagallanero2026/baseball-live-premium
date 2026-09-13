@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Control Baseball Live Premium</title>
+  <link rel="stylesheet" href="control.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <div class="eyebrow">BASEBALL LIVE PREMIUM</div>
+        <h1>Panel de control</h1>
+      </div>
+      <div class="header-actions">
+        <span class="mode-badge" id="modeBadge">CONECTANDO</span>
+        <button class="btn ghost" id="undoBtn">↶ Deshacer</button>
+        <button class="btn ghost hidden" id="logoutBtn">Salir</button>
+      </div>
+    </header>
+
+    <main id="controlApp" class="control-main locked">
+      <section class="card live-summary">
+        <div>
+          <span class="section-kicker">EN VIVO</span>
+          <strong id="liveMatch">MAGALLANES 0 — 0 RIVAL</strong>
+        </div>
+        <div class="at-bat">BATEA: <strong id="atBatName">MAGALLANES</strong></div>
+      </section>
+
+      <section class="teams-grid">
+        <article class="card team-control">
+          <div class="team-head">
+            <div><span class="section-kicker">VISITANTE</span><h2 id="awayTitle">MAGALLANES</h2></div>
+            <div class="score-big" id="awayScoreBig">0</div>
+          </div>
+          <label>Nombre del equipo<input id="awayNameInput" maxlength="24" value="MAGALLANES" /></label>
+          <div class="stat-grid">
+            <div class="stat-control"><span>CARRERAS</span><div><button data-step="away:runs:-1">−</button><b id="awayRunsValue">0</b><button data-step="away:runs:1">+</button></div></div>
+            <div class="stat-control"><span>HITS</span><div><button data-step="away:hits:-1">−</button><b id="awayHitsValue">0</b><button data-step="away:hits:1">+</button></div></div>
+            <div class="stat-control"><span>ERRORES</span><div><button data-step="away:errors:-1">−</button><b id="awayErrorsValue">0</b><button data-step="away:errors:1">+</button></div></div>
+          </div>
+        </article>
+
+        <article class="card team-control gold-card">
+          <div class="team-head">
+            <div><span class="section-kicker">LOCAL</span><h2 id="homeTitle">RIVAL</h2></div>
+            <div class="score-big gold" id="homeScoreBig">0</div>
+          </div>
+          <label>Nombre del equipo<input id="homeNameInput" maxlength="24" value="RIVAL" /></label>
+          <div class="stat-grid">
+            <div class="stat-control"><span>CARRERAS</span><div><button data-step="home:runs:-1">−</button><b id="homeRunsValue">0</b><button data-step="home:runs:1">+</button></div></div>
+            <div class="stat-control"><span>HITS</span><div><button data-step="home:hits:-1">−</button><b id="homeHitsValue">0</b><button data-step="home:hits:1">+</button></div></div>
+            <div class="stat-control"><span>ERRORES</span><div><button data-step="home:errors:-1">−</button><b id="homeErrorsValue">0</b><button data-step="home:errors:1">+</button></div></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="card">
+        <div class="section-title-row"><div><span class="section-kicker">JUGADA RÁPIDA</span><h2>Contador y acciones</h2></div><button class="btn subtle" id="resetCountBtn">Limpiar conteo</button></div>
+        <div class="quick-grid">
+          <button class="action-btn green" data-action="ball"><span>BOLA</span><b>+1</b></button>
+          <button class="action-btn yellow" data-action="strike"><span>STRIKE</span><b>+1</b></button>
+          <button class="action-btn red" data-action="out"><span>OUT</span><b>+1</b></button>
+          <button class="action-btn blue" data-action="single"><span>HIT</span><b>1B</b></button>
+          <button class="action-btn blue" data-action="double"><span>DOBLE</span><b>2B</b></button>
+          <button class="action-btn blue" data-action="triple"><span>TRIPLE</span><b>3B</b></button>
+          <button class="action-btn gold" data-action="homerun"><span>HOME RUN</span><b>HR</b></button>
+          <button class="action-btn violet" data-action="walk"><span>BASE POR BOLAS</span><b>BB</b></button>
+          <button class="action-btn dark" data-action="strikeout"><span>PONCHE</span><b>K</b></button>
+        </div>
+        <div class="count-readout">
+          <div><span>B</span><strong id="ballsValue">0</strong></div>
+          <div><span>S</span><strong id="strikesValue">0</strong></div>
+          <div><span>O</span><strong id="outsValue">0</strong></div>
+        </div>
+        <p class="hint">Automático: 4 bolas = BB, 3 strikes = K y 3 outs = cambio de lado.</p>
+      </section>
+
+      <section class="two-col">
+        <article class="card">
+          <div class="section-title-row"><div><span class="section-kicker">DIAMANTE</span><h2>Corredores</h2></div><button class="btn subtle" id="clearBasesBtn">Vaciar bases</button></div>
+          <div class="base-controls">
+            <button class="base-toggle" data-base="third">3B</button>
+            <button class="base-toggle" data-base="second">2B</button>
+            <button class="base-toggle" data-base="first">1B</button>
+          </div>
+          <p class="hint">Toca una base para encenderla o apagarla manualmente.</p>
+        </article>
+
+        <article class="card">
+          <div class="section-title-row"><div><span class="section-kicker">INNING</span><h2 id="inningDisplay">▲ ALTA DEL 1</h2></div></div>
+          <div class="inning-controls">
+            <button class="btn primary" id="switchSideBtn">Cambiar lado</button>
+            <button class="btn subtle" id="inningMinusBtn">− Inning</button>
+            <button class="btn subtle" id="inningPlusBtn">+ Inning</button>
+          </div>
+          <div class="half-buttons">
+            <button id="topBtn">▲ Alta</button>
+            <button id="bottomBtn">▼ Baja</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="card">
+        <div class="section-title-row"><div><span class="section-kicker">EFECTOS</span><h2>Animaciones en pantalla</h2></div></div>
+        <div class="fx-grid">
+          <button data-fx="HOME RUN">HOME RUN</button>
+          <button data-fx="¡CARRERA!">CARRERA</button>
+          <button data-fx="PONCHE">PONCHE</button>
+          <button data-fx="HIT">HIT</button>
+          <button data-fx="DOBLE">DOBLE</button>
+          <button data-fx="TRIPLE">TRIPLE</button>
+          <button data-fx="CAMBIO DE INNING">CAMBIO DE INNING</button>
+        </div>
+      </section>
+
+      <section class="card danger-zone">
+        <div><span class="section-kicker">PARTIDO</span><h2>Herramientas</h2></div>
+        <button class="btn danger" id="newGameBtn">Reiniciar partido</button>
+      </section>
+    </main>
+  </div>
+
+  <div class="login-screen hidden" id="loginScreen">
+    <form class="login-card" id="loginForm">
+      <div class="login-logo">⚾</div>
+      <span class="section-kicker">ACCESO PRIVADO</span>
+      <h2>Control del marcador</h2>
+      <p>Entra con el usuario que crearás en Firebase Authentication.</p>
+      <label>Correo<input id="emailInput" type="email" autocomplete="username" required /></label>
+      <label>Contraseña<input id="passwordInput" type="password" autocomplete="current-password" required /></label>
+      <button class="btn primary full" type="submit">Entrar</button>
+      <div class="login-error" id="loginError"></div>
+    </form>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script type="module" src="control.js"></script>
+</body>
+</html>
