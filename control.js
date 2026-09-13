@@ -12,13 +12,26 @@ import {
 
 const $ = id => document.getElementById(id);
 const HISTORY_KEY = "baseball-live-premium-history-v1";
+const MAGALLANES_META = { name: "MAGALLANES", short: "MAG", logo: "./assets/magallanes.png" };
+
 let game = normalizeGame(DEFAULT_GAME);
 let canWrite = mode === "local";
 let toastTimer = null;
 
 function clone(v) { return JSON.parse(JSON.stringify(v)); }
 function battingKey(g = game) { return g.inning.half === "top" ? "away" : "home"; }
-function fieldingKey(g = game) { return battingKey(g) === "away" ? "home" : "away"; }
+
+function initials(name) {
+  const words = String(name || "").trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return "EQP";
+  if (words.length === 1) return words[0].slice(0, 3).toUpperCase();
+  return words.slice(0, 3).map(w => w[0]).join("").toUpperCase();
+}
+
+function isMagallanes(team) {
+  const text = `${team?.name || ""} ${team?.short || ""}`.toUpperCase();
+  return text.includes("MAGALLANES") || /\bMAG\b/.test(text);
+}
 
 function showToast(message) {
   clearTimeout(toastTimer);
@@ -51,9 +64,6 @@ function fx(next, type) {
   const unique = (globalThis.crypto && typeof globalThis.crypto.randomUUID === "function")
     ? globalThis.crypto.randomUUID()
     : Math.random().toString(36).slice(2);
-
-  // Cada evento lleva un identificador único y una marca de tiempo.
-  // Así dos carreras seguidas siempre generan una animación nueva.
   next.fx = { type, nonce: `${at}-${unique}`, at };
 }
 
@@ -174,27 +184,60 @@ async function action(type) {
   await commit(next, `${next.teams[key].name}: ${next.lastPlay}`);
 }
 
+function renderLogoPreview(side, team) {
+  const img = $(`${side}LogoPreview`);
+  const fallback = $(`${side}LogoFallback`);
+  const shell = $(`${side}LogoShell`);
+  if (!img || !fallback || !shell) return;
+
+  fallback.textContent = team.short || initials(team.name);
+  const logo = String(team.logo || "").trim();
+  if (!logo) {
+    img.removeAttribute("src");
+    img.style.display = "none";
+    shell.classList.remove("has-logo");
+    return;
+  }
+  img.onload = () => { img.style.display = "block"; shell.classList.add("has-logo"); };
+  img.onerror = () => { img.style.display = "none"; shell.classList.remove("has-logo"); };
+  img.src = logo;
+}
+
 function render(g) {
   game = normalizeGame(g);
   const a = game.teams.away;
   const h = game.teams.home;
-  $("awayTitle").textContent = a.name;
+
   $("homeTitle").textContent = h.name;
-  if (document.activeElement !== $("awayNameInput")) $("awayNameInput").value = a.name;
+  $("awayTitle").textContent = a.name;
+
   if (document.activeElement !== $("homeNameInput")) $("homeNameInput").value = h.name;
-  $("awayScoreBig").textContent = a.runs;
+  if (document.activeElement !== $("awayNameInput")) $("awayNameInput").value = a.name;
+  if (document.activeElement !== $("homeShortInput")) $("homeShortInput").value = h.short || initials(h.name);
+  if (document.activeElement !== $("awayShortInput")) $("awayShortInput").value = a.short || initials(a.name);
+  if (document.activeElement !== $("homeLogoUrlInput")) $("homeLogoUrlInput").value = h.logo?.startsWith("data:") ? "" : (h.logo || "");
+  if (document.activeElement !== $("awayLogoUrlInput")) $("awayLogoUrlInput").value = a.logo?.startsWith("data:") ? "" : (a.logo || "");
+
+  renderLogoPreview("home", h);
+  renderLogoPreview("away", a);
+
   $("homeScoreBig").textContent = h.runs;
-  $("awayRunsValue").textContent = a.runs;
-  $("awayHitsValue").textContent = a.hits;
-  $("awayErrorsValue").textContent = a.errors;
+  $("awayScoreBig").textContent = a.runs;
   $("homeRunsValue").textContent = h.runs;
   $("homeHitsValue").textContent = h.hits;
   $("homeErrorsValue").textContent = h.errors;
+  $("awayRunsValue").textContent = a.runs;
+  $("awayHitsValue").textContent = a.hits;
+  $("awayErrorsValue").textContent = a.errors;
+
   $("ballsValue").textContent = game.count.balls;
   $("strikesValue").textContent = game.count.strikes;
   $("outsValue").textContent = game.count.outs;
+
+  // Visualmente: VISITANTE a la izquierda y HOME a la derecha.
   $("liveMatch").textContent = `${a.name} ${a.runs} — ${h.runs} ${h.name}`;
   $("atBatName").textContent = game.teams[battingKey(game)].name;
+
   const top = game.inning.half === "top";
   $("inningDisplay").textContent = `${top ? "▲ ALTA" : "▼ BAJA"} DEL ${game.inning.number}`;
   $("topBtn").classList.toggle("active", top);
@@ -202,10 +245,91 @@ function render(g) {
   document.querySelectorAll("[data-base]").forEach(btn => btn.classList.toggle("active", Boolean(game.bases[btn.dataset.base])));
 }
 
-async function handleTeamName(key, value) {
+async function handleTeamField(key, field, value) {
   const next = clone(game);
-  next.teams[key].name = value.trim() || (key === "away" ? "VISITANTE" : "LOCAL");
-  await commit(next, "Nombre actualizado");
+  if (field === "name") next.teams[key].name = value.trim() || (key === "home" ? "HOME CLUB" : "VISITANTE");
+  if (field === "short") next.teams[key].short = value.trim().replace(/[^A-Za-z0-9ÁÉÍÓÚÑ]/gi, "").slice(0, 5).toUpperCase() || initials(next.teams[key].name);
+  if (field === "logo") next.teams[key].logo = value.trim();
+  await commit(next, "Equipo actualizado");
+}
+
+function loadImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => resolve(img);
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function compressLogo(file) {
+  if (!file?.type?.startsWith("image/")) throw new Error("Selecciona una imagen válida");
+  if (file.size > 8 * 1024 * 1024) throw new Error("El logo es demasiado pesado");
+
+  const img = await loadImage(file);
+  const maxSide = 320;
+  const ratio = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+  const width = Math.max(1, Math.round(img.naturalWidth * ratio));
+  const height = Math.max(1, Math.round(img.naturalHeight * ratio));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, width, height);
+  ctx.drawImage(img, 0, 0, width, height);
+
+  let data = canvas.toDataURL("image/webp", .88);
+  if (!data.startsWith("data:image/webp")) data = canvas.toDataURL("image/png");
+  if (data.length > 330000) data = canvas.toDataURL("image/webp", .72);
+  if (data.length > 345000) throw new Error("El logo sigue siendo demasiado pesado. Usa una imagen más pequeña.");
+  return data;
+}
+
+async function handleLogoFile(key, file) {
+  try {
+    showToast("Procesando logo...");
+    const dataUrl = await compressLogo(file);
+    const next = clone(game);
+    next.teams[key].logo = dataUrl;
+    await commit(next, "Logo actualizado");
+  } catch (error) {
+    showToast(error?.message || "No se pudo cargar el logo");
+  }
+}
+
+async function clearLogo(key) {
+  const next = clone(game);
+  next.teams[key].logo = "";
+  await commit(next, "Logo eliminado");
+}
+
+async function swapTeams(message = "VISITANTE y HOME intercambiados") {
+  const next = clone(game);
+  const temp = next.teams.home;
+  next.teams.home = next.teams.away;
+  next.teams.away = temp;
+  next.lastPlay = "EQUIPOS CONFIGURADOS";
+  await commit(next, message);
+}
+
+async function moveMagallanesTo(target) {
+  const other = target === "home" ? "away" : "home";
+  if (isMagallanes(game.teams[target])) return showToast(`Magallanes ya está como ${target === "home" ? "HOME" : "VISITANTE"}`);
+
+  if (isMagallanes(game.teams[other])) {
+    await swapTeams(`Magallanes configurado como ${target === "home" ? "HOME" : "VISITANTE"}`);
+    return;
+  }
+
+  const next = clone(game);
+  next.teams[target] = { ...next.teams[target], ...MAGALLANES_META };
+  next.lastPlay = "EQUIPOS CONFIGURADOS";
+  await commit(next, `Magallanes configurado como ${target === "home" ? "HOME" : "VISITANTE"}`);
 }
 
 function bindEvents() {
@@ -220,13 +344,11 @@ function bindEvents() {
       const label = labels[stat] || stat.toUpperCase();
       next.lastPlay = `${next.teams[team].name}: ${label} ${change > 0 ? "+1" : "-1"}`;
 
-      // Las acciones directas del marcador también disparan su animación en el overlay.
       if (change > 0) {
         if (stat === "runs") fx(next, "CARRERA");
         if (stat === "hits") fx(next, "HIT");
         if (stat === "errors") fx(next, "ERROR");
       }
-
       await commit(next, "Marcador actualizado");
     });
   });
@@ -252,8 +374,20 @@ function bindEvents() {
     });
   });
 
-  $("awayNameInput").addEventListener("change", e => handleTeamName("away", e.target.value));
-  $("homeNameInput").addEventListener("change", e => handleTeamName("home", e.target.value));
+  $("homeNameInput").addEventListener("change", e => handleTeamField("home", "name", e.target.value));
+  $("awayNameInput").addEventListener("change", e => handleTeamField("away", "name", e.target.value));
+  $("homeShortInput").addEventListener("change", e => handleTeamField("home", "short", e.target.value));
+  $("awayShortInput").addEventListener("change", e => handleTeamField("away", "short", e.target.value));
+  $("homeLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleTeamField("home", "logo", e.target.value); });
+  $("awayLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleTeamField("away", "logo", e.target.value); });
+  $("homeLogoFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) handleLogoFile("home", f); e.target.value = ""; });
+  $("awayLogoFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) handleLogoFile("away", f); e.target.value = ""; });
+  $("homeLogoClearBtn").addEventListener("click", () => clearLogo("home"));
+  $("awayLogoClearBtn").addEventListener("click", () => clearLogo("away"));
+
+  $("swapTeamsBtn").addEventListener("click", () => swapTeams());
+  $("magHomeBtn").addEventListener("click", () => moveMagallanesTo("home"));
+  $("magAwayBtn").addEventListener("click", () => moveMagallanesTo("away"));
 
   $("resetCountBtn").addEventListener("click", async () => {
     const next = clone(game); resetCount(next); next.lastPlay = "CONTEO LIMPIO"; await commit(next, "Conteo limpio");
@@ -286,10 +420,14 @@ function bindEvents() {
   });
 
   $("newGameBtn").addEventListener("click", async () => {
-    if (!confirm("¿Reiniciar todo el partido? Se pondrán carreras, hits, errores, conteo y bases en cero.")) return;
+    if (!confirm("¿Reiniciar todo el partido? Se pondrán carreras, hits, errores, conteo y bases en cero. Los nombres y logos se conservarán.")) return;
     const next = normalizeGame(DEFAULT_GAME);
-    next.teams.away.name = game.teams.away.name;
-    next.teams.home.name = game.teams.home.name;
+    // Conserva toda la identidad de ambos equipos; solo reinicia las estadísticas.
+    for (const key of ["home", "away"]) {
+      next.teams[key].name = game.teams[key].name;
+      next.teams[key].short = game.teams[key].short;
+      next.teams[key].logo = game.teams[key].logo;
+    }
     next.lastPlay = "PLAY BALL";
     fx(next, "PLAY BALL");
     await commit(next, "Partido reiniciado");

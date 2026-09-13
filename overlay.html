@@ -3,45 +3,58 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Overlay Baseball Live Premium — Marcador V4.3</title>
-  <link rel="stylesheet" href="overlay.css?v=4.3.0" />
+  <title>Overlay Team Soy Magallanero — V4.5</title>
+  <link rel="stylesheet" href="overlay.css?v=4.5.0" />
 </head>
 <body>
   <main class="broadcast-frame" aria-label="Overlay vertical de béisbol en vivo">
 
     <!--
-      Las cámaras NO se dibujan aquí.
-      LIVE Studio usa esos espacios con sus propias fuentes:
-      - cámara principal: superior izquierda
-      - 4 comentaristas: columna derecha
-      El overlay solamente ocupa el espacio del marcador y las animaciones.
+      V4.5: sin marcos para cámara ni comentaristas.
+      El overlay permanente se concentra únicamente en el marcador.
+      Regla: VISITANTE izquierda / HOME derecha.
     -->
 
-    <!-- Zona inferior reservada al chat. Solo visible si se abre con ?guides=1 -->
+    <!-- Solo visible con /overlay?guides=1 -->
     <div class="chat-safe-zone" aria-hidden="true"><span>ZONA LIBRE PARA CHAT</span></div>
 
-    <!-- Marcador premium. Conserva todos los IDs usados por overlay.js -->
-    <section class="scorebug" id="scorebug">
-      <div class="scorebug-accent accent-left"></div>
-      <div class="scorebug-accent accent-right"></div>
+    <section class="scorebug scorebug-premium" id="scorebug">
+      <div class="orbit-deco orbit-one"></div>
+      <div class="orbit-deco orbit-two"></div>
+      <div class="glass-sheen"></div>
 
-      <div class="topbar">
-        <div class="live-brand"><span class="live-dot"></span>BÉISBOL EN VIVO</div>
-        <div class="inning-pill">
+      <div class="scorebug-topbar">
+        <div class="broadcast-brand">
+          <img class="brand-mark" src="./assets/team-soy-magallanero-mark.png" alt="" />
+          <div class="brand-copy">
+            <span class="brand-kicker"><i class="live-dot"></i>EN VIVO</span>
+            <strong>TEAM SOY MAGALLANERO</strong>
+          </div>
+        </div>
+
+        <div class="inning-pill" aria-label="Inning actual">
           <span id="halfArrow">▲</span>
           <span id="halfLabel">ALTA</span>
           <strong id="inningNumber">1</strong>
         </div>
       </div>
 
-      <div class="main-grid">
-        <article class="team-card away-card">
+      <div class="scorebug-main">
+        <!-- VISITANTE SIEMPRE A LA IZQUIERDA -->
+        <article class="team-side team-away is-magallanes" id="awayCard">
           <div class="team-role">VISITANTE</div>
-          <div class="team-title-row">
-            <div class="team-badge" id="awayBadge">MAG</div>
-            <div class="team-name" id="awayName">MAGALLANES</div>
+          <div class="team-head">
+            <div class="team-logo-shell has-logo">
+              <img id="awayLogo" class="team-logo" src="./assets/magallanes.png" alt="Logo visitante" />
+              <span id="awayBadge" class="team-logo-fallback">MAG</span>
+            </div>
+            <div class="team-copy">
+              <div class="team-short" id="awayShort">MAG</div>
+              <div class="team-name" id="awayName">MAGALLANES</div>
+            </div>
           </div>
-          <div class="score-row">
+
+          <div class="score-zone">
             <div class="team-score" id="awayRuns">0</div>
             <div class="rhe-row" aria-label="Carreras hits errores visitante">
               <span><small>R</small><b id="awayR">0</b></span>
@@ -51,8 +64,10 @@
           </div>
         </article>
 
+        <!-- CENTRO DE JUEGO -->
         <div class="center-panel">
-          <div class="batting-label"><span>BATEA</span><strong id="battingTeam">MAGALLANES</strong></div>
+          <div class="batting-pill"><span class="batting-dot"></span>BATEA <strong id="battingTeam">MAGALLANES</strong></div>
+
           <div class="diamond-wrap" aria-label="Corredores en bases">
             <div class="diamond-lines"></div>
             <div class="base second" id="baseSecond"><span>2</span></div>
@@ -61,7 +76,7 @@
             <div class="home-plate"></div>
           </div>
 
-          <div class="count-panel">
+          <div class="count-panel" aria-label="Bolas strikes outs">
             <div class="count-line balls-line">
               <span class="count-letter">B</span>
               <i data-ball="1"></i><i data-ball="2"></i><i data-ball="3"></i>
@@ -77,32 +92,40 @@
           </div>
         </div>
 
-        <article class="team-card home-card">
-          <div class="team-role">LOCAL</div>
-          <div class="team-title-row reverse">
-            <div class="team-name" id="homeName">RIVAL</div>
-            <div class="team-badge" id="homeBadge">RIV</div>
+        <!-- HOME CLUB SIEMPRE A LA DERECHA -->
+        <article class="team-side team-home" id="homeCard">
+          <div class="team-role">HOME CLUB</div>
+          <div class="team-head team-head-right">
+            <div class="team-copy team-copy-right">
+              <div class="team-short" id="homeShort">RIV</div>
+              <div class="team-name" id="homeName">RIVAL</div>
+            </div>
+            <div class="team-logo-shell">
+              <img id="homeLogo" class="team-logo" alt="Logo home club" />
+              <span id="homeBadge" class="team-logo-fallback">RIV</span>
+            </div>
           </div>
-          <div class="score-row reverse-score">
-            <div class="team-score" id="homeRuns">0</div>
-            <div class="rhe-row" aria-label="Carreras hits errores local">
+
+          <div class="score-zone score-zone-right">
+            <div class="rhe-row" aria-label="Carreras hits errores home club">
               <span><small>R</small><b id="homeR">0</b></span>
               <span><small>H</small><b id="homeH">0</b></span>
               <span><small>E</small><b id="homeE">0</b></span>
             </div>
+            <div class="team-score" id="homeRuns">0</div>
           </div>
         </article>
       </div>
 
-      <div class="lowerbar">
+      <div class="scorebug-bottombar">
         <div class="last-play-label">ÚLTIMA JUGADA</div>
         <div class="last-play" id="lastPlay">PLAY BALL</div>
         <div class="status-chip" id="connectionStatus">CONECTANDO</div>
       </div>
     </section>
 
-    <!-- Animaciones centradas en el área libre izquierda, sin invadir la columna de comentaristas -->
     <section class="fx-layer" id="fxLayer" aria-live="polite">
+      <div class="fx-orbit"></div>
       <div class="fx-glow"></div>
       <div class="fx-text" id="fxText">HOME RUN</div>
     </section>
@@ -116,6 +139,6 @@
     fitOverlayCanvas();
     window.addEventListener("resize", fitOverlayCanvas, { passive: true });
   </script>
-  <script type="module" src="overlay.js?v=4.3.0"></script>
+  <script type="module" src="overlay.js?v=4.5.0"></script>
 </body>
 </html>

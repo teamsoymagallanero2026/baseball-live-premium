@@ -1,8 +1,7 @@
 // =============================================================
 // CONFIGURACIÓN ÚNICA DEL PROYECTO
-// 1) Crea tu app web en Firebase.
-// 2) Copia aquí el objeto firebaseConfig que te muestra Firebase.
-// 3) NO pongas contraseñas en este archivo.
+// Firebase ya está configurado. No coloques contraseñas aquí.
+// V4.5: VISITANTE izquierda / HOME derecha, logos editables y look TV premium.
 // =============================================================
 
 export const FIREBASE_CONFIG = {
@@ -16,10 +15,26 @@ export const FIREBASE_CONFIG = {
 };
 
 export const DEFAULT_GAME = {
-  version: 1,
+  version: 3,
   teams: {
-    away: { name: "MAGALLANES", runs: 0, hits: 0, errors: 0 },
-    home: { name: "RIVAL", runs: 0, hits: 0, errors: 0 }
+    // VISITANTE = lado IZQUIERDO del overlay y batea en la ALTA.
+    away: {
+      name: "MAGALLANES",
+      short: "MAG",
+      logo: "./assets/magallanes.png",
+      runs: 0,
+      hits: 0,
+      errors: 0
+    },
+    // HOME CLUB = lado DERECHO del overlay y batea en la BAJA.
+    home: {
+      name: "RIVAL",
+      short: "RIV",
+      logo: "",
+      runs: 0,
+      hits: 0,
+      errors: 0
+    }
   },
   count: { balls: 0, strikes: 0, outs: 0 },
   inning: { number: 1, half: "top" },

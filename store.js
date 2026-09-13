@@ -50,7 +50,7 @@ export function normalizeGame(input) {
   const g = clone(DEFAULT_GAME);
   if (!input || typeof input !== "object") return g;
 
-  g.version = 1;
+  g.version = 3;
   g.teams.away = { ...g.teams.away, ...(input.teams?.away || {}) };
   g.teams.home = { ...g.teams.home, ...(input.teams?.home || {}) };
   g.count = { ...g.count, ...(input.count || {}) };
@@ -61,7 +61,23 @@ export function normalizeGame(input) {
   g.updatedAt = Number(input.updatedAt || 0);
 
   for (const key of ["away", "home"]) {
-    g.teams[key].name = String(g.teams[key].name || (key === "away" ? "VISITANTE" : "LOCAL")).slice(0, 24);
+    const inputTeam = input.teams?.[key] || {};
+    g.teams[key].name = String(g.teams[key].name || (key === "away" ? "VISITANTE" : "HOME CLUB")).slice(0, 24);
+
+    const words = g.teams[key].name.trim().split(/\s+/).filter(Boolean);
+    const derivedShort = words.length <= 1
+      ? (words[0] || (key === "away" ? "VIS" : "HOM")).slice(0, 3).toUpperCase()
+      : words.slice(0, 3).map(w => w[0]).join("").toUpperCase();
+    const rawShort = typeof inputTeam.short === "string" && inputTeam.short.trim() ? inputTeam.short : derivedShort;
+    g.teams[key].short = String(rawShort).replace(/[^A-Za-z0-9ÁÉÍÓÚÑ]/gi, "").slice(0, 5).toUpperCase() || derivedShort;
+
+    if (typeof inputTeam.logo === "string") {
+      g.teams[key].logo = inputTeam.logo.slice(0, 350000);
+    } else {
+      const looksMagallanes = g.teams[key].name.toUpperCase().includes("MAGALLANES");
+      g.teams[key].logo = looksMagallanes ? "./assets/magallanes.png" : "";
+    }
+
     g.teams[key].runs = Math.max(0, Number(g.teams[key].runs || 0));
     g.teams[key].hits = Math.max(0, Number(g.teams[key].hits || 0));
     g.teams[key].errors = Math.max(0, Number(g.teams[key].errors || 0));

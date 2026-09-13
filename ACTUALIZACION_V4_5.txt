@@ -1,0 +1,25 @@
+BASEBALL LIVE PREMIUM — V4.5 PREMIUM TV
+========================================
+
+CAMBIOS PRINCIPALES
+- Regla definitiva: VISITANTE a la IZQUIERDA y HOME CLUB a la DERECHA.
+- ALTA del inning: batea VISITANTE.
+- BAJA del inning: batea HOME CLUB.
+- Nombres, siglas y logos editables desde /control.
+- Logos cargables desde PC (PNG/JPG/WebP) o mediante URL.
+- Contenedores de logo con efecto cristal brillante / broadcast TV.
+- Números de carreras ampliados.
+- R/H/E con mayor tamaño y contraste.
+- Diamante y bases ocupadas más grandes, con brillo premium.
+- Semáforos B/S/O grandes: Bolas verde, Strikes amarillo/dorado, Outs rojo.
+- Equipo al bate identificado automáticamente por ALTA/BAJA.
+- Mantiene Firebase, Deshacer, carreras/hits/errores, bases, innings y animaciones automáticas.
+- Reiniciar partido conserva nombres, siglas y logos.
+- No se dibujan marcos de cámara ni de comentaristas.
+
+INSTALACIÓN
+1. Sube TODOS los archivos de esta carpeta al repositorio GitHub reemplazando la versión anterior.
+2. Commit sugerido: V4.5 marcador premium TV final
+3. Espera Vercel: Ready / Production / Current.
+4. Abre /control y /overlay?v=4.5.
+5. Haz Ctrl+F5 en ambos.

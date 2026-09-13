@@ -118,3 +118,72 @@ input:focus { border-color: rgba(88,199,255,.7); box-shadow: 0 0 0 3px rgba(88,1
   .count-readout > div { min-width: 0; }
   .danger-zone { align-items: flex-start; flex-direction: column; }
 }
+
+/* =========================================================
+   V4.4 — CONFIGURACIÓN DE EQUIPOS + LOGOS
+   HOME siempre izquierda / VISITANTE siempre derecha
+   ========================================================= */
+.team-setup-card {
+  border-color: rgba(88,199,255,.24);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(23,120,255,.12), transparent 36%),
+    linear-gradient(145deg, rgba(13,28,55,.96), rgba(7,17,34,.98));
+}
+.setup-title { align-items: flex-start; }
+.setup-rule {
+  padding: 9px 11px;
+  border-radius: 999px;
+  color: #bfeaff;
+  background: rgba(88,199,255,.08);
+  border: 1px solid rgba(88,199,255,.18);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+.team-preset-actions { display: flex; gap: 9px; flex-wrap: wrap; }
+.btn.gold-btn {
+  color: #201800;
+  background: linear-gradient(135deg, #ffd64d, #e6a900);
+  border-color: rgba(255,220,104,.45);
+  box-shadow: 0 10px 24px rgba(255,201,40,.14);
+}
+.home-control { border-top-color: var(--cyan); }
+.away-control { border-top-color: var(--gold); }
+.team-heading-with-logo { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.team-heading-with-logo h2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 330px; }
+.control-logo-shell {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 17px;
+  background: linear-gradient(145deg, rgba(23,120,255,.35), rgba(6,26,58,.9));
+  border: 1px solid rgba(88,199,255,.28);
+  box-shadow: inset 0 1px rgba(255,255,255,.18), 0 10px 22px rgba(0,0,0,.18);
+}
+.away-control .control-logo-shell {
+  border-color: rgba(255,201,40,.34);
+  background: linear-gradient(145deg, rgba(255,201,40,.20), rgba(6,26,58,.9));
+}
+.control-logo-shell img {
+  position: relative;
+  z-index: 2;
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.28));
+}
+.control-logo-shell span { position: absolute; z-index: 1; font-weight: 1000; font-size: 13px; }
+.control-logo-shell.has-logo span { display: none; }
+.team-fields-grid { display: grid; grid-template-columns: 1fr 110px; gap: 10px; }
+.logo-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.upload-label { display: inline-flex; align-items: center; justify-content: center; margin: 0; color: white; font-size: 13px; }
+@media (max-width: 620px) {
+  .setup-rule { white-space: normal; }
+  .team-fields-grid { grid-template-columns: 1fr; }
+  .team-heading-with-logo h2 { max-width: 190px; }
+}

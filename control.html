@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Control Baseball Live Premium</title>
-  <link rel="stylesheet" href="control.css?v=3.1.0" />
+  <title>Control Team Soy Magallanero — V4.5</title>
+  <link rel="stylesheet" href="control.css?v=4.5.0" />
 </head>
 <body>
   <div class="app-shell">
     <header class="app-header">
       <div>
-        <div class="eyebrow">BASEBALL LIVE PREMIUM</div>
+        <div class="eyebrow">TEAM SOY MAGALLANERO · V4.5</div>
         <h1>Panel de control</h1>
       </div>
       <div class="header-actions">
@@ -23,19 +23,55 @@
     <main id="controlApp" class="control-main locked">
       <section class="card live-summary">
         <div>
-          <span class="section-kicker">EN VIVO</span>
+          <span class="section-kicker">EN VIVO · VISITANTE IZQUIERDA / HOME DERECHA</span>
           <strong id="liveMatch">MAGALLANES 0 — 0 RIVAL</strong>
         </div>
         <div class="at-bat">BATEA: <strong id="atBatName">MAGALLANES</strong></div>
       </section>
 
-      <section class="teams-grid">
-        <article class="card team-control">
-          <div class="team-head">
-            <div><span class="section-kicker">VISITANTE</span><h2 id="awayTitle">MAGALLANES</h2></div>
-            <div class="score-big" id="awayScoreBig">0</div>
+      <section class="card team-setup-card">
+        <div class="section-title-row setup-title">
+          <div>
+            <span class="section-kicker">CONFIGURACIÓN DEL PARTIDO</span>
+            <h2>Visitante izquierda · Home club derecha</h2>
           </div>
-          <label>Nombre del equipo<input id="awayNameInput" maxlength="24" value="MAGALLANES" /></label>
+          <div class="setup-rule">ALTA = BATEA VISITANTE · BAJA = BATEA HOME</div>
+        </div>
+        <div class="team-preset-actions">
+          <button class="btn primary" id="magAwayBtn">Magallanes VISITANTE</button>
+          <button class="btn gold-btn" id="magHomeBtn">Magallanes HOME</button>
+          <button class="btn subtle" id="swapTeamsBtn">⇄ Intercambiar VISITANTE / HOME</button>
+        </div>
+        <p class="hint">Los nombres, siglas y logos son editables. Puedes cargar cada logo desde tu PC o pegar una URL. Al iniciar un inning, el visitante batea en la ALTA y el home club cubre; en la BAJA batea el home.</p>
+      </section>
+
+      <section class="teams-grid">
+        <!-- VISITANTE = SIEMPRE IZQUIERDA EN EL OVERLAY -->
+        <article class="card team-control away-control gold-card">
+          <div class="team-head">
+            <div class="team-heading-with-logo">
+              <div class="control-logo-shell" id="awayLogoShell">
+                <img id="awayLogoPreview" alt="Logo visitante" />
+                <span id="awayLogoFallback">MAG</span>
+              </div>
+              <div>
+                <span class="section-kicker">VISITANTE · IZQUIERDA</span>
+                <h2 id="awayTitle">MAGALLANES</h2>
+              </div>
+            </div>
+            <div class="score-big gold" id="awayScoreBig">0</div>
+          </div>
+
+          <div class="team-fields-grid">
+            <label>Nombre del equipo<input id="awayNameInput" maxlength="24" value="MAGALLANES" /></label>
+            <label>Sigla<input id="awayShortInput" maxlength="5" value="MAG" /></label>
+          </div>
+          <label>Logo por URL (opcional)<input id="awayLogoUrlInput" placeholder="https://... o ./assets/logo.png" /></label>
+          <div class="logo-actions">
+            <label class="btn subtle upload-label">Seleccionar logo<input id="awayLogoFile" type="file" accept="image/*" hidden /></label>
+            <button class="btn ghost" id="awayLogoClearBtn" type="button">Quitar logo</button>
+          </div>
+
           <div class="stat-grid">
             <div class="stat-control"><span>CARRERAS</span><div><button data-step="away:runs:-1">−</button><b id="awayRunsValue">0</b><button data-step="away:runs:1">+</button></div></div>
             <div class="stat-control"><span>HITS</span><div><button data-step="away:hits:-1">−</button><b id="awayHitsValue">0</b><button data-step="away:hits:1">+</button></div></div>
@@ -43,12 +79,32 @@
           </div>
         </article>
 
-        <article class="card team-control gold-card">
+        <!-- HOME CLUB = SIEMPRE DERECHA EN EL OVERLAY -->
+        <article class="card team-control home-control">
           <div class="team-head">
-            <div><span class="section-kicker">LOCAL</span><h2 id="homeTitle">RIVAL</h2></div>
-            <div class="score-big gold" id="homeScoreBig">0</div>
+            <div class="team-heading-with-logo">
+              <div class="control-logo-shell" id="homeLogoShell">
+                <img id="homeLogoPreview" alt="Logo home" />
+                <span id="homeLogoFallback">HOM</span>
+              </div>
+              <div>
+                <span class="section-kicker">HOME CLUB · DERECHA</span>
+                <h2 id="homeTitle">RIVAL</h2>
+              </div>
+            </div>
+            <div class="score-big" id="homeScoreBig">0</div>
           </div>
-          <label>Nombre del equipo<input id="homeNameInput" maxlength="24" value="RIVAL" /></label>
+
+          <div class="team-fields-grid">
+            <label>Nombre del equipo<input id="homeNameInput" maxlength="24" value="RIVAL" /></label>
+            <label>Sigla<input id="homeShortInput" maxlength="5" value="RIV" /></label>
+          </div>
+          <label>Logo por URL (opcional)<input id="homeLogoUrlInput" placeholder="https://... o ./assets/logo.png" /></label>
+          <div class="logo-actions">
+            <label class="btn subtle upload-label">Seleccionar logo<input id="homeLogoFile" type="file" accept="image/*" hidden /></label>
+            <button class="btn ghost" id="homeLogoClearBtn" type="button">Quitar logo</button>
+          </div>
+
           <div class="stat-grid">
             <div class="stat-control"><span>CARRERAS</span><div><button data-step="home:runs:-1">−</button><b id="homeRunsValue">0</b><button data-step="home:runs:1">+</button></div></div>
             <div class="stat-control"><span>HITS</span><div><button data-step="home:hits:-1">−</button><b id="homeHitsValue">0</b><button data-step="home:hits:1">+</button></div></div>
@@ -107,9 +163,10 @@
         <div class="section-title-row"><div><span class="section-kicker">EFECTOS</span><h2>Animaciones en pantalla</h2></div></div>
         <div class="fx-grid">
           <button data-fx="HOME RUN">HOME RUN</button>
-          <button data-fx="¡CARRERA!">CARRERA</button>
+          <button data-fx="CARRERA">CARRERA</button>
           <button data-fx="PONCHE">PONCHE</button>
           <button data-fx="HIT">HIT</button>
+          <button data-fx="ERROR">ERROR</button>
           <button data-fx="DOBLE">DOBLE</button>
           <button data-fx="TRIPLE">TRIPLE</button>
           <button data-fx="CAMBIO DE INNING">CAMBIO DE INNING</button>
@@ -128,7 +185,7 @@
       <div class="login-logo">⚾</div>
       <span class="section-kicker">ACCESO PRIVADO</span>
       <h2>Control del marcador</h2>
-      <p>Entra con el usuario que crearás en Firebase Authentication.</p>
+      <p>Entra con el usuario configurado en Firebase Authentication.</p>
       <label>Correo<input id="emailInput" type="email" autocomplete="username" required /></label>
       <label>Contraseña<input id="passwordInput" type="password" autocomplete="current-password" required /></label>
       <button class="btn primary full" type="submit">Entrar</button>
@@ -137,6 +194,6 @@
   </div>
 
   <div class="toast" id="toast"></div>
-  <script type="module" src="control.js?v=3.1.0"></script>
+  <script type="module" src="control.js?v=4.5.0"></script>
 </body>
 </html>

@@ -138,3 +138,7 @@ V3 - ANIMACIONES ROBUSTAS
 - Si el usuario cambia de pestaña a mitad de la animación, se reproduce completa al regresar.
 - Las animaciones duran aproximadamente 3.6 segundos para que sean más fáciles de comprobar.
 - Un evento antiguo no se reproduce al abrir el overlay mucho después.
+
+--- ACTUALIZACIÓN V4.5 ---
+Usa README_V4_5.txt como guía actual.
+Regla actual: VISITANTE izquierda / HOME derecha; ALTA batea visitante / BAJA batea home.
