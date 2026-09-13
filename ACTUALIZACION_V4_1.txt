@@ -1,0 +1,11 @@
+BASEBALL LIVE PREMIUM V4.1
+
+Cambio principal:
+- El overlay ahora usa un lienzo interno fijo de 1080x1920 (9:16).
+- En cualquier navegador se escala proporcionalmente sin deformarse.
+- En TikTok LIVE Studio configurado a 1080x1920 queda en escala 1:1.
+- Se mantienen intactas las animaciones y la lógica Firebase de V4/V3.
+- ?guides=1 sigue mostrando la zona reservada al chat.
+
+Prueba recomendada:
+https://TU-DOMINIO.vercel.app/overlay?guides=1&v=4.1

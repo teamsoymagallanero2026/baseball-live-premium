@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Overlay Baseball Live Premium — TikTok 9:16</title>
-  <link rel="stylesheet" href="overlay.css?v=4.0.0" />
+  <title>Overlay Baseball Live Premium — TikTok 1080×1920</title>
+  <link rel="stylesheet" href="overlay.css?v=4.1.0" />
 </head>
 <body>
   <main class="broadcast-frame" aria-label="Overlay vertical de béisbol en vivo">
@@ -107,6 +107,17 @@
     </section>
   </main>
 
-  <script type="module" src="overlay.js?v=4.0.0"></script>
+
+  <script>
+    // Mantiene un lienzo interno exacto de 1080×1920 y lo escala sin deformarlo.
+    // En TikTok LIVE Studio a 1080×1920 el factor es 1:1.
+    function fitOverlayCanvas() {
+      const scale = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
+      document.documentElement.style.setProperty("--overlay-scale", String(scale));
+    }
+    fitOverlayCanvas();
+    window.addEventListener("resize", fitOverlayCanvas, { passive: true });
+  </script>
+  <script type="module" src="overlay.js?v=4.1.0"></script>
 </body>
 </html>
