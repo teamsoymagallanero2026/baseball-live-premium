@@ -12,7 +12,7 @@ import {
 
 const $ = id => document.getElementById(id);
 const HISTORY_KEY = "baseball-live-premium-history-v1";
-const MAGALLANES_META = { name: "MAGALLANES", short: "MAG", logo: "./assets/magallanes.png", logoVersion: 1, primary: "#1D8FFF", secondary: "#FFD54A" };
+const MAGALLANES_META = { name: "MAGALLANES", short: "MAG", logo: "./assets/magallanes.png" };
 
 let game = normalizeGame(DEFAULT_GAME);
 let canWrite = mode === "local";
@@ -31,30 +31,6 @@ function initials(name) {
 function isMagallanes(team) {
   const text = `${team?.name || ""} ${team?.short || ""}`.toUpperCase();
   return text.includes("MAGALLANES") || /\bMAG\b/.test(text);
-}
-
-function normalizeHexColor(value, fallback = "#2ea8ff") {
-  const raw = String(value || "").trim();
-  if (/^#[0-9a-fA-F]{6}$/.test(raw)) return raw.toUpperCase();
-  if (/^#[0-9a-fA-F]{3}$/.test(raw)) {
-    return ("#" + raw[1] + raw[1] + raw[2] + raw[2] + raw[3] + raw[3]).toUpperCase();
-  }
-  return fallback.toUpperCase();
-}
-
-function defaultTeamTheme(key, team) {
-  if (isMagallanes(team)) return { primary: "#1D8FFF", secondary: "#FFD54A" };
-  return key === "home"
-    ? { primary: "#F4B400", secondary: "#FFF3B0" }
-    : { primary: "#2EA8FF", secondary: "#A7EEFF" };
-}
-
-function getTeamTheme(key, team) {
-  const fallback = defaultTeamTheme(key, team);
-  return {
-    primary: normalizeHexColor(team?.primary, fallback.primary),
-    secondary: normalizeHexColor(team?.secondary, fallback.secondary)
-  };
 }
 
 function showToast(message) {
@@ -208,29 +184,11 @@ async function action(type) {
   await commit(next, `${next.teams[key].name}: ${next.lastPlay}`);
 }
 
-function logoSrcWithVersion(src, version = 1) {
-  const value = String(src || "").trim();
-  if (!value || value.startsWith("data:") || value.startsWith("blob:")) return value;
-  try {
-    const url = new URL(value, window.location.href);
-    url.searchParams.set("logo_v", String(version || 1));
-    return url.href;
-  } catch {
-    const sep = value.includes("?") ? "&" : "?";
-    return `${value}${sep}logo_v=${encodeURIComponent(String(version || 1))}`;
-  }
-}
-
 function renderLogoPreview(side, team) {
   const img = $(`${side}LogoPreview`);
   const fallback = $(`${side}LogoFallback`);
   const shell = $(`${side}LogoShell`);
   if (!img || !fallback || !shell) return;
-
-  const key = side === "home" ? "home" : "away";
-  const theme = getTeamTheme(key, team);
-  shell.style.setProperty("--team-primary", theme.primary);
-  shell.style.setProperty("--team-secondary", theme.secondary);
 
   fallback.textContent = team.short || initials(team.name);
   const logo = String(team.logo || "").trim();
@@ -242,11 +200,7 @@ function renderLogoPreview(side, team) {
   }
   img.onload = () => { img.style.display = "block"; shell.classList.add("has-logo"); };
   img.onerror = () => { img.style.display = "none"; shell.classList.remove("has-logo"); };
-  const resolved = logoSrcWithVersion(logo, team.logoVersion);
-  if (img.src !== resolved) {
-    img.removeAttribute("src");
-    img.src = resolved;
-  }
+  img.src = logo;
 }
 
 function render(g) {
@@ -263,12 +217,6 @@ function render(g) {
   if (document.activeElement !== $("awayShortInput")) $("awayShortInput").value = a.short || initials(a.name);
   if (document.activeElement !== $("homeLogoUrlInput")) $("homeLogoUrlInput").value = h.logo?.startsWith("data:") ? "" : (h.logo || "");
   if (document.activeElement !== $("awayLogoUrlInput")) $("awayLogoUrlInput").value = a.logo?.startsWith("data:") ? "" : (a.logo || "");
-  const homeTheme = getTeamTheme("home", h);
-  const awayTheme = getTeamTheme("away", a);
-  if (document.activeElement !== $("homePrimaryInput")) $("homePrimaryInput").value = homeTheme.primary;
-  if (document.activeElement !== $("homeSecondaryInput")) $("homeSecondaryInput").value = homeTheme.secondary;
-  if (document.activeElement !== $("awayPrimaryInput")) $("awayPrimaryInput").value = awayTheme.primary;
-  if (document.activeElement !== $("awaySecondaryInput")) $("awaySecondaryInput").value = awayTheme.secondary;
 
   renderLogoPreview("home", h);
   renderLogoPreview("away", a);
@@ -301,13 +249,7 @@ async function handleTeamField(key, field, value) {
   const next = clone(game);
   if (field === "name") next.teams[key].name = value.trim() || (key === "home" ? "HOME CLUB" : "VISITANTE");
   if (field === "short") next.teams[key].short = value.trim().replace(/[^A-Za-z0-9ÁÉÍÓÚÑ]/gi, "").slice(0, 5).toUpperCase() || initials(next.teams[key].name);
-  if (field === "logo") {
-    next.teams[key].logo = value.trim();
-    next.teams[key].logoVersion = Date.now();
-    next.teams[key].logoSourceUrl = value.trim();
-  }
-  if (field === "primary") next.teams[key].primary = normalizeHexColor(value, defaultTeamTheme(key, next.teams[key]).primary);
-  if (field === "secondary") next.teams[key].secondary = normalizeHexColor(value, defaultTeamTheme(key, next.teams[key]).secondary);
+  if (field === "logo") next.teams[key].logo = value.trim();
   await commit(next, "Equipo actualizado");
 }
 
@@ -348,61 +290,12 @@ async function compressLogo(file) {
   return data;
 }
 
-async function urlToDataUrl(url) {
-  const response = await fetch(url, { cache: "no-store" });
-  if (!response.ok) throw new Error("No se pudo descargar el logo desde la URL");
-  const blob = await response.blob();
-  if (!blob.type.startsWith("image/")) throw new Error("La URL no contiene una imagen válida");
-  if (blob.size > 8 * 1024 * 1024) throw new Error("La imagen de la URL es demasiado pesada");
-  return await new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error("No se pudo convertir el logo"));
-    reader.readAsDataURL(blob);
-  });
-}
-
-async function handleLogoUrl(key, rawUrl) {
-  const url = String(rawUrl || "").trim();
-  if (!url) return;
-  try {
-    showToast("Descargando logo...");
-    let storedLogo = url;
-    try {
-      storedLogo = await urlToDataUrl(url);
-    } catch (innerError) {
-      console.warn("No se pudo convertir a dataURL, se guardará la URL directa", innerError);
-    }
-    const next = clone(game);
-    next.teams[key].logo = storedLogo;
-    next.teams[key].logoVersion = Date.now();
-    next.teams[key].logoSourceUrl = url;
-    await commit(next, "Logo actualizado");
-  } catch (error) {
-    showToast(error?.message || "No se pudo cargar el logo desde la URL");
-  }
-}
-
-async function refreshLogoFromSource(key) {
-  const current = game.teams[key];
-  const source = String(current.logoSourceUrl || "").trim();
-  if (source) {
-    await handleLogoUrl(key, source);
-    return;
-  }
-  const next = clone(game);
-  next.teams[key].logoVersion = Date.now();
-  await commit(next, `Logo ${key.toUpperCase()} refrescado`);
-}
-
 async function handleLogoFile(key, file) {
   try {
     showToast("Procesando logo...");
     const dataUrl = await compressLogo(file);
     const next = clone(game);
     next.teams[key].logo = dataUrl;
-    next.teams[key].logoVersion = Date.now();
-    next.teams[key].logoSourceUrl = "";
     await commit(next, "Logo actualizado");
   } catch (error) {
     showToast(error?.message || "No se pudo cargar el logo");
@@ -412,8 +305,6 @@ async function handleLogoFile(key, file) {
 async function clearLogo(key) {
   const next = clone(game);
   next.teams[key].logo = "";
-  next.teams[key].logoVersion = Date.now();
-  next.teams[key].logoSourceUrl = "";
   await commit(next, "Logo eliminado");
 }
 
@@ -487,16 +378,10 @@ function bindEvents() {
   $("awayNameInput").addEventListener("change", e => handleTeamField("away", "name", e.target.value));
   $("homeShortInput").addEventListener("change", e => handleTeamField("home", "short", e.target.value));
   $("awayShortInput").addEventListener("change", e => handleTeamField("away", "short", e.target.value));
-  $("homePrimaryInput").addEventListener("change", e => handleTeamField("home", "primary", e.target.value));
-  $("homeSecondaryInput").addEventListener("change", e => handleTeamField("home", "secondary", e.target.value));
-  $("awayPrimaryInput").addEventListener("change", e => handleTeamField("away", "primary", e.target.value));
-  $("awaySecondaryInput").addEventListener("change", e => handleTeamField("away", "secondary", e.target.value));
-  $("homeLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleLogoUrl("home", e.target.value); });
-  $("awayLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleLogoUrl("away", e.target.value); });
+  $("homeLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleTeamField("home", "logo", e.target.value); });
+  $("awayLogoUrlInput").addEventListener("change", e => { if (e.target.value.trim()) handleTeamField("away", "logo", e.target.value); });
   $("homeLogoFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) handleLogoFile("home", f); e.target.value = ""; });
   $("awayLogoFile").addEventListener("change", e => { const f = e.target.files?.[0]; if (f) handleLogoFile("away", f); e.target.value = ""; });
-  $("homeLogoRefreshBtn").addEventListener("click", () => refreshLogoFromSource("home"));
-  $("awayLogoRefreshBtn").addEventListener("click", () => refreshLogoFromSource("away"));
   $("homeLogoClearBtn").addEventListener("click", () => clearLogo("home"));
   $("awayLogoClearBtn").addEventListener("click", () => clearLogo("away"));
 
@@ -542,10 +427,6 @@ function bindEvents() {
       next.teams[key].name = game.teams[key].name;
       next.teams[key].short = game.teams[key].short;
       next.teams[key].logo = game.teams[key].logo;
-      next.teams[key].logoVersion = game.teams[key].logoVersion;
-      next.teams[key].logoSourceUrl = game.teams[key].logoSourceUrl || "";
-      next.teams[key].primary = game.teams[key].primary;
-      next.teams[key].secondary = game.teams[key].secondary;
     }
     next.lastPlay = "PLAY BALL";
     fx(next, "PLAY BALL");

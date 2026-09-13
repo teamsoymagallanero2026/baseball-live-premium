@@ -50,7 +50,7 @@ export function normalizeGame(input) {
   const g = clone(DEFAULT_GAME);
   if (!input || typeof input !== "object") return g;
 
-  g.version = 4;
+  g.version = 3;
   g.teams.away = { ...g.teams.away, ...(input.teams?.away || {}) };
   g.teams.home = { ...g.teams.home, ...(input.teams?.home || {}) };
   g.count = { ...g.count, ...(input.count || {}) };
@@ -77,7 +77,6 @@ export function normalizeGame(input) {
       const looksMagallanes = g.teams[key].name.toUpperCase().includes("MAGALLANES");
       g.teams[key].logo = looksMagallanes ? "./assets/magallanes.png" : "";
     }
-    g.teams[key].logoVersion = Math.max(1, Number(inputTeam.logoVersion || g.teams[key].logoVersion || 1));
 
     g.teams[key].runs = Math.max(0, Number(g.teams[key].runs || 0));
     g.teams[key].hits = Math.max(0, Number(g.teams[key].hits || 0));

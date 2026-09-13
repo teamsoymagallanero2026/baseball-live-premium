@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Overlay Team Soy Magallanero — V4.6.3.1</title>
-  <link rel="stylesheet" href="overlay.css?v=4.6.3" />
+  <title>Overlay Team Soy Magallanero — V4.5.1</title>
+  <link rel="stylesheet" href="overlay.css?v=4.5.1" />
 </head>
 <body>
   <main class="broadcast-frame" aria-label="Overlay vertical de béisbol en vivo">
@@ -39,30 +39,23 @@
         </div>
       </div>
 
-      <div class="matchup-band">
-        <div class="matchup-side matchup-away">
-          <div class="matchup-role">VISITANTE</div>
-          <div class="matchup-name" id="awayNameTop">MAGALLANES</div>
-        </div>
-        <div class="matchup-vs">VS.</div>
-        <div class="matchup-side matchup-home">
-          <div class="matchup-role">HOME CLUB</div>
-          <div class="matchup-name" id="homeNameTop">RIVAL</div>
-        </div>
-      </div>
-
       <div class="scorebug-main">
+        <!-- VISITANTE SIEMPRE A LA IZQUIERDA -->
         <article class="team-side team-away is-magallanes" id="awayCard">
-          <div class="team-panel-glass">
-            <div class="team-upper">
-              <div class="team-logo-shell has-logo">
-                <img id="awayLogo" class="team-logo" src="./assets/magallanes.png" alt="" />
-                <span id="awayBadge" class="team-logo-fallback">MAG</span>
-              </div>
-              <div class="team-score-wrap">
-                <div class="team-score" id="awayRuns">0</div>
-              </div>
+          <div class="team-role">VISITANTE</div>
+          <div class="team-head">
+            <div class="team-logo-shell has-logo">
+              <img id="awayLogo" class="team-logo" src="./assets/magallanes.png" alt="Logo visitante" />
+              <span id="awayBadge" class="team-logo-fallback">MAG</span>
             </div>
+            <div class="team-copy">
+              <div class="team-short" id="awayShort">MAG</div>
+              <div class="team-name" id="awayName">MAGALLANES</div>
+            </div>
+          </div>
+
+          <div class="score-zone">
+            <div class="team-score" id="awayRuns">0</div>
             <div class="rhe-row" aria-label="Carreras hits errores visitante">
               <span><small>R</small><b id="awayR">0</b></span>
               <span><small>H</small><b id="awayH">0</b></span>
@@ -71,6 +64,7 @@
           </div>
         </article>
 
+        <!-- CENTRO DE JUEGO -->
         <div class="center-panel">
           <div class="batting-pill"><span class="batting-dot"></span>BATEA <strong id="battingTeam">MAGALLANES</strong></div>
 
@@ -89,31 +83,36 @@
             </div>
             <div class="count-line strikes-line">
               <span class="count-letter">S</span>
-              <i data-strike="1"></i><i data-strike="2"></i><i data-strike="3"></i>
+              <i data-strike="1"></i><i data-strike="2"></i>
             </div>
             <div class="count-line outs-line">
               <span class="count-letter">O</span>
-              <i data-out="1"></i><i data-out="2"></i><i data-out="3"></i>
+              <i data-out="1"></i><i data-out="2"></i>
             </div>
           </div>
         </div>
 
+        <!-- HOME CLUB SIEMPRE A LA DERECHA -->
         <article class="team-side team-home" id="homeCard">
-          <div class="team-panel-glass">
-            <div class="team-upper">
-              <div class="team-logo-shell">
-                <img id="homeLogo" class="team-logo" alt="" />
-                <span id="homeBadge" class="team-logo-fallback">RIV</span>
-              </div>
-              <div class="team-score-wrap">
-                <div class="team-score" id="homeRuns">0</div>
-              </div>
+          <div class="team-role">HOME CLUB</div>
+          <div class="team-head team-head-right">
+            <div class="team-copy team-copy-right">
+              <div class="team-short" id="homeShort">RIV</div>
+              <div class="team-name" id="homeName">RIVAL</div>
             </div>
+            <div class="team-logo-shell">
+              <img id="homeLogo" class="team-logo" alt="Logo home club" />
+              <span id="homeBadge" class="team-logo-fallback">RIV</span>
+            </div>
+          </div>
+
+          <div class="score-zone score-zone-right">
             <div class="rhe-row" aria-label="Carreras hits errores home club">
               <span><small>R</small><b id="homeR">0</b></span>
               <span><small>H</small><b id="homeH">0</b></span>
               <span><small>E</small><b id="homeE">0</b></span>
             </div>
+            <div class="team-score" id="homeRuns">0</div>
           </div>
         </article>
       </div>
@@ -140,6 +139,6 @@
     fitOverlayCanvas();
     window.addEventListener("resize", fitOverlayCanvas, { passive: true });
   </script>
-  <script type="module" src="overlay.js?v=4.6.3"></script>
+  <script type="module" src="overlay.js?v=4.5.1"></script>
 </body>
 </html>

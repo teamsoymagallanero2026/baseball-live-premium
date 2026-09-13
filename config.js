@@ -1,7 +1,7 @@
 // =============================================================
 // CONFIGURACIÓN ÚNICA DEL PROYECTO
 // Firebase ya está configurado. No coloques contraseñas aquí.
-// V4.5.4: VISITANTE izquierda / HOME derecha, logos/nombres/colores editables y look TV premium glass.
+// V4.5: VISITANTE izquierda / HOME derecha, logos editables y look TV premium.
 // =============================================================
 
 export const FIREBASE_CONFIG = {
@@ -15,16 +15,13 @@ export const FIREBASE_CONFIG = {
 };
 
 export const DEFAULT_GAME = {
-  version: 4,
+  version: 3,
   teams: {
     // VISITANTE = lado IZQUIERDO del overlay y batea en la ALTA.
     away: {
       name: "MAGALLANES",
       short: "MAG",
       logo: "./assets/magallanes.png",
-      logoVersion: 1,
-      primary: "#1d8fff",
-      secondary: "#ffd54a",
       runs: 0,
       hits: 0,
       errors: 0
@@ -34,9 +31,6 @@ export const DEFAULT_GAME = {
       name: "RIVAL",
       short: "RIV",
       logo: "",
-      logoVersion: 1,
-      primary: "#f4b400",
-      secondary: "#fff3b0",
       runs: 0,
       hits: 0,
       errors: 0
