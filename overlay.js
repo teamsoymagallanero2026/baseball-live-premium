@@ -1,6 +1,11 @@
 import { mode, subscribeGame } from "./store.js";
 
 const $ = id => document.getElementById(id);
+// Modo de alineación opcional: abre /overlay?guides=1 para ver la zona reservada al chat.
+if (new URLSearchParams(location.search).get("guides") === "1") {
+  document.body.classList.add("show-guides");
+}
+
 const FX_DURATION_MS = 3600;
 const FX_FRESH_WINDOW_MS = 15000;
 

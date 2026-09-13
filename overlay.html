@@ -3,13 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Overlay Baseball Live Premium</title>
-  <link rel="stylesheet" href="overlay.css?v=3.1.0" />
+  <title>Overlay Baseball Live Premium — TikTok 9:16</title>
+  <link rel="stylesheet" href="overlay.css?v=4.0.0" />
 </head>
 <body>
-  <main class="broadcast-frame" aria-label="Marcador de béisbol en vivo">
-    <div class="narrator-safe-zone" aria-hidden="true"></div>
+  <main class="broadcast-frame" aria-label="Overlay vertical de béisbol en vivo">
 
+    <!-- Marco de la cámara principal. La fuente de cámara se coloca debajo del navegador en LIVE Studio. -->
+    <section class="camera-frame host-camera-frame" aria-label="Zona para cámara principal">
+      <div class="frame-label">CÁMARA PRINCIPAL</div>
+      <div class="helm-badge" aria-hidden="true">⎈</div>
+    </section>
+
+    <!-- Cuatro ventanillas de comentaristas. Orden visual: 1 abajo → 4 arriba. -->
+    <section class="commentator-column" aria-label="Columna de comentaristas">
+      <div class="camera-frame commentator-frame commentator-4"><span>COMENTARISTA 4</span></div>
+      <div class="camera-frame commentator-frame commentator-3"><span>COMENTARISTA 3</span></div>
+      <div class="camera-frame commentator-frame commentator-2"><span>COMENTARISTA 2</span></div>
+      <div class="camera-frame commentator-frame commentator-1"><span>COMENTARISTA 1</span></div>
+    </section>
+
+    <!-- Zona libre para el chat. Solo se muestra con ?guides=1 -->
+    <div class="chat-safe-zone" aria-hidden="true"><span>ZONA LIBRE PARA CHAT</span></div>
+
+    <!-- Marcador compacto. Conserva todos los IDs utilizados por overlay.js -->
     <section class="scorebug" id="scorebug">
       <div class="topbar">
         <div class="live-brand"><span class="live-dot"></span> BÉISBOL EN VIVO</div>
@@ -83,12 +100,13 @@
       </div>
     </section>
 
+    <!-- Animaciones: se limitan al área centro-izquierda para no cubrir comentaristas ni chat. -->
     <section class="fx-layer" id="fxLayer" aria-live="polite">
       <div class="fx-glow"></div>
       <div class="fx-text" id="fxText">HOME RUN</div>
     </section>
   </main>
 
-  <script type="module" src="overlay.js?v=3.1.0"></script>
+  <script type="module" src="overlay.js?v=4.0.0"></script>
 </body>
 </html>

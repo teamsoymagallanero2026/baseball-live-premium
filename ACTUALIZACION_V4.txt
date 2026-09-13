@@ -1,0 +1,19 @@
+BASEBALL LIVE PREMIUM — V4 TIKTOK LAYOUT
+========================================
+
+NOVEDADES
+- Overlay optimizado para 1080x1920 (9:16).
+- Cámara principal: esquina superior izquierda.
+- 4 ventanillas de comentaristas: columna derecha, orden 1 abajo → 4 arriba.
+- Marcador compacto debajo de la cámara principal.
+- Zona inferior izquierda reservada para chat/mensajes.
+- Animaciones desplazadas al centro-izquierda para no tapar comentaristas ni chat.
+- /overlay?guides=1 muestra la zona reservada al chat para facilitar alineación.
+
+IMPORTANTE EN TIKTOK LIVE STUDIO
+Orden recomendado de fuentes (de abajo hacia arriba):
+1. Fondo marítimo / imagen de diseño.
+2. Fuentes de cámara (host + 4 comentaristas).
+3. Browser Source: /overlay
+
+Así los centros de las ventanillas permanecen transparentes y las cámaras quedan debajo de los marcos.
