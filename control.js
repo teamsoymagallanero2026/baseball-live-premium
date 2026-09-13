@@ -205,9 +205,21 @@ function bindEvents() {
   document.querySelectorAll("[data-step]").forEach(button => {
     button.addEventListener("click", async () => {
       const [team, stat, delta] = button.dataset.step.split(":");
+      const change = Number(delta);
       const next = clone(game);
-      next.teams[team][stat] = Math.max(0, Number(next.teams[team][stat]) + Number(delta));
-      next.lastPlay = `${next.teams[team].name}: ${stat.toUpperCase()} ${Number(delta) > 0 ? "+1" : "-1"}`;
+      next.teams[team][stat] = Math.max(0, Number(next.teams[team][stat]) + change);
+
+      const labels = { runs: "CARRERA", hits: "HIT", errors: "ERROR" };
+      const label = labels[stat] || stat.toUpperCase();
+      next.lastPlay = `${next.teams[team].name}: ${label} ${change > 0 ? "+1" : "-1"}`;
+
+      // Las acciones directas del marcador también disparan su animación en el overlay.
+      if (change > 0) {
+        if (stat === "runs") fx(next, "CARRERA");
+        if (stat === "hits") fx(next, "HIT");
+        if (stat === "errors") fx(next, "ERROR");
+      }
+
       await commit(next, "Marcador actualizado");
     });
   });
